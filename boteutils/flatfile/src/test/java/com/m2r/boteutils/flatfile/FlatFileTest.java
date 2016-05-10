@@ -54,6 +54,7 @@ public class FlatFileTest {
 				Assert.assertEquals(trailler.getId(), new Integer(9));
 				Assert.assertEquals(trailler.getSequencialRegistro(), new Integer(4));
 			}
+			Assert.assertFalse(iterator.hasNext());
 
 		} catch (FlatFileException e) {
 			e.printStackTrace();
