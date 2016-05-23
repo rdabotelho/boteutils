@@ -5,14 +5,20 @@ import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.m2r.flatfile.annotation.FlatField;
 import com.m2r.flatfile.enumeration.FlatFieldTypeEnum;
 import com.m2r.flatfile.exception.FlatFileException;
 
 public class FlatFile {
+
+	private static Logger logger = Logger.getLogger(FlatFile.class.getSimpleName());
+
+	private Class<?> readedClass;
+	private Field readefField;
 
 	private BufferedReader buffer;
 	private String line;
@@ -22,6 +28,7 @@ public class FlatFile {
 
 	public FlatFile() {
 		this.flatFields = new ArrayList<Class<?>>();
+		this.reset();
 	}
 
 	public void registerRecord(Class<?> flatField) {
@@ -29,15 +36,39 @@ public class FlatFile {
 		this.flatFields.add(flatField);
 	}
 
-	public Iterator<Object> load(Reader reader) throws FlatFileException {
+	public void load(Reader reader) throws FlatFileException {
 
-		this.close();
-		this.isEnd = false;
-		this.line = null;
 		this.buffer = new BufferedReader(reader);
+		this.isEnd = false;
 		this.readLine();
+	}
 
-		return new FlatFileIterator(this);
+	public boolean hasNextRecord() {
+		if (this.line == null) {
+			if (!this.isEnd) {
+				this.reset();
+			}
+		}
+		return !this.isEnd;
+	}
+
+	public Object nextRecord() {
+		try {
+			Class<?> clazz = this.getFlatFieldClass();
+			Object object = null;
+			if (clazz != null) {
+				this.readedClass = clazz;
+				logger.info("Reading record: " + this.readedClass.getSimpleName());
+				object = this.readFlatFileObject(clazz);
+			}
+			this.readLine();
+			return object;
+		}
+		catch (Exception e) {
+			logger.log(Level.SEVERE, String.format("Erro in field '%s' of record '%s'", (this.readefField != null ? this.readefField.getName() : ""), (this.readedClass != null ? this.readedClass.getSimpleName() : "")), e);
+			this.reset();
+			return null;
+		}
 	}
 
 	protected void readLine() throws FlatFileException {
@@ -48,32 +79,14 @@ public class FlatFile {
 		}
 	}
 
-	protected boolean hasNextRecord() {
-		if (this.line == null) {
-			if (!this.isEnd) {
-				this.close();
-				this.isEnd = true;
-			}
-		}
-		return !this.isEnd;
-	}
-
-	protected Object nextRecord() throws Exception {
-		Class<?> clazz = this.getFlatFieldClass();
-		Object object = null;
-		if (clazz != null) {
-			object = this.readFlatFileObject(clazz);
-		}
-		this.readLine();
-		return object;
-	}
-
-	protected void close() {
+	protected void reset() {
 		try {
 			if (this.buffer != null) {
 				this.buffer.close();
 				this.buffer = null;
 			}
+			this.isEnd = true;
+			this.line = null;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -83,16 +96,22 @@ public class FlatFile {
 
 		FlatField ff = null;
 		String id = null;
+		int flagId, flagMatch = 0;
 		for (Class<?> clazz : this.flatFields) {
+			flagId = 0;
+			flagMatch = 0;
 			for (Field field : clazz.getDeclaredFields()) {
 				ff = field.getAnnotation(FlatField.class);
 				if ((ff != null) && !ff.id().equals("")) {
+					flagId++;
 					id = this.line.substring(ff.begin(), ff.end());
 					if (ff.id().endsWith(id)) {
-						return clazz;
+						flagMatch++;
 					}
-					break;
 				}
+			}
+			if ((flagId > 0) && (flagId == flagMatch)) {
+				return clazz;
 			}
 		}
 		return null;
@@ -105,6 +124,7 @@ public class FlatFile {
 		Object value = null;
 		Object object = clazz.newInstance();
 		for (Field field : clazz.getDeclaredFields()) {
+			this.readefField = field;
 			ff = field.getAnnotation(FlatField.class);
 			ffe = ff.converter();
 			if (ff != null) {

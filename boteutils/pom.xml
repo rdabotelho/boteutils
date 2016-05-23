@@ -16,6 +16,7 @@
 
 	<modules>
 		<module>flatfile</module>
+		<module>extractor</module>
 	</modules>
 
 	<dependencyManagement>

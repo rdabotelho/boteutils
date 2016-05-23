@@ -2,10 +2,11 @@ package com.m2r.boteutils.flatfile;
 
 import static org.junit.Assert.fail;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Iterator;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -31,31 +32,54 @@ public class FlatFileTest {
 		flatFile.registerRecord(TraillerRetorno.class);
 
 		try {
-			Iterator<Object> iterator = flatFile.load(reader);
-			if (iterator.hasNext()) {
-				HeaderRetorno header = (HeaderRetorno) iterator.next();
+			flatFile.load(reader);
+			if (flatFile.hasNextRecord()) {
+				HeaderRetorno header = (HeaderRetorno) flatFile.nextRecord();
 				Assert.assertNotNull(header);
 				Assert.assertEquals(header.getId(), new Integer(0));
 				Assert.assertEquals(header.getSequencialRegistro(), new Integer(1));
 			}
-			if (iterator.hasNext()) {
-				DetailRetorno detail = (DetailRetorno) iterator.next();
+			if (flatFile.hasNextRecord()) {
+				DetailRetorno detail = (DetailRetorno) flatFile.nextRecord();
 				Assert.assertNotNull(detail);
 				Assert.assertEquals(detail.getId(), new Integer(7));
 				Assert.assertEquals(detail.getSequencialRegistro(), new Integer(2));
 			}
-			if (iterator.hasNext()) {
-				DetailRetorno detail = (DetailRetorno) iterator.next();
+			if (flatFile.hasNextRecord()) {
+				DetailRetorno detail = (DetailRetorno) flatFile.nextRecord();
 				Assert.assertNull(detail);
 			}
-			if (iterator.hasNext()) {
-				TraillerRetorno trailler = (TraillerRetorno) iterator.next();
+			if (flatFile.hasNextRecord()) {
+				TraillerRetorno trailler = (TraillerRetorno) flatFile.nextRecord();
 				Assert.assertNotNull(trailler);
 				Assert.assertEquals(trailler.getId(), new Integer(9));
 				Assert.assertEquals(trailler.getSequencialRegistro(), new Integer(4));
 			}
-			Assert.assertFalse(iterator.hasNext());
+			Assert.assertFalse(flatFile.hasNextRecord());
 
+		} catch (FlatFileException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+
+	}
+
+	@Test
+	public void test2() throws FileNotFoundException {
+		InputStream in = new FileInputStream("C:\\Users\\raimundo.botelho\\Downloads\\IEDCBR3051705201610655.ret");
+		Reader reader = new InputStreamReader(in);
+
+		FlatFile flatFile = new FlatFile();
+
+		flatFile.registerRecord(com.m2r.boteutils.flatfile.modelo2.HeaderRetorno.class);
+		flatFile.registerRecord(com.m2r.boteutils.flatfile.modelo2.HeaderLoteRetorno.class);
+		flatFile.registerRecord(com.m2r.boteutils.flatfile.modelo2.DetailRetorno.class);
+
+		try {
+			flatFile.load(reader);
+			while (flatFile.hasNextRecord()) {
+				System.out.println(flatFile.nextRecord());
+			}
 		} catch (FlatFileException e) {
 			e.printStackTrace();
 			fail(e.getMessage());
