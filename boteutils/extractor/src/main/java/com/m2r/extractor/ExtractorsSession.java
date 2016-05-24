@@ -2,7 +2,9 @@ package com.m2r.extractor;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,8 +28,11 @@ public class ExtractorsSession {
 
 	private List<Extractor> extractors;
 
+	private Map<String, Object> parameters;
+
 	public ExtractorsSession() {
 		this.extractors = new ArrayList<Extractor>();
+		this.parameters = new HashMap<String, Object>();
 		this.tmpDir = System.getProperty("java.io.tmpdir") + File.separatorChar + "exsedir";
 
 		File tmpDir = new File(this.tmpDir);
@@ -38,6 +43,19 @@ public class ExtractorsSession {
 
 	public void addExtractor(Extractor extractor) {
 		this.extractors.add(extractor);
+	}
+
+	public void addParameter(String key, Object object) {
+		this.parameters.put(key, object);
+	}
+
+	public Object getParameter(String key) {
+		return this.parameters.get(key);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <E> E getParameter(Class<E> clazz) {
+		return (E) this.parameters.get(clazz.getSimpleName());
 	}
 
 	public WebDriver getDriver() {
