@@ -7,6 +7,7 @@
 		<version>1.0.0</version>
 	</parent>
 	
+	<groupId>com.m2r.boteutils</groupId>
 	<artifactId>flatfile</artifactId>
 	<version>1.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
