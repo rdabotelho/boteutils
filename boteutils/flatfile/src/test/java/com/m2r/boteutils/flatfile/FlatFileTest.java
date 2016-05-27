@@ -21,7 +21,7 @@ import com.m2r.flatfile.exception.FlatFileException;
 public class FlatFileTest {
 
 	@Test
-	public void test() {
+	public void test1() {
 		InputStream in = this.getClass().getResourceAsStream("file.ret");
 		Reader reader = new InputStreamReader(in);
 
@@ -64,7 +64,41 @@ public class FlatFileTest {
 
 	}
 
-	public void test2() throws FileNotFoundException {
+	@Test
+	public void test2() {
+		InputStream in = this.getClass().getResourceAsStream("CBR6433142405201610409.ret");
+		Reader reader = new InputStreamReader(in);
+
+		FlatFile flatFile = new FlatFile();
+
+		flatFile.registerRecord(HeaderRetorno.class);
+		flatFile.registerRecord(DetailRetorno.class);
+		flatFile.registerRecord(TraillerRetorno.class);
+
+		try {
+			flatFile.load(reader);
+			if (flatFile.hasNextRecord()) {
+				HeaderRetorno header = (HeaderRetorno) flatFile.nextRecord();
+				Assert.assertNotNull(header);
+				Assert.assertEquals(header.getId(), new Integer(0));
+				Assert.assertEquals(header.getSequencialRegistro(), new Integer(1));
+			}
+			if (flatFile.hasNextRecord()) {
+				TraillerRetorno trailler = (TraillerRetorno) flatFile.nextRecord();
+				Assert.assertNotNull(trailler);
+				Assert.assertEquals(trailler.getId(), new Integer(9));
+				Assert.assertEquals(trailler.getSequencialRegistro(), new Integer(2));
+			}
+			Assert.assertFalse(flatFile.hasNextRecord());
+
+		} catch (FlatFileException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
+
+	}
+
+	public void test3() throws FileNotFoundException {
 		InputStream in = new FileInputStream("C:\\Users\\raimundo.botelho\\Downloads\\IEDCBR3051705201610655.ret");
 		Reader reader = new InputStreamReader(in);
 
