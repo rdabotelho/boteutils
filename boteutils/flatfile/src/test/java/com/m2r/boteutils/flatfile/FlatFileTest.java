@@ -64,7 +64,6 @@ public class FlatFileTest {
 
 	}
 
-	@Test
 	public void test2() throws FileNotFoundException {
 		InputStream in = new FileInputStream("C:\\Users\\raimundo.botelho\\Downloads\\IEDCBR3051705201610655.ret");
 		Reader reader = new InputStreamReader(in);

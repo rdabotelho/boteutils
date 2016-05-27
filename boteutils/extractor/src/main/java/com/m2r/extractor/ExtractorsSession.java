@@ -19,7 +19,7 @@ public class ExtractorsSession {
 
 	private static Logger logger = Logger.getLogger(ExtractorsSession.class.getSimpleName());
 
-	private static final int WAIT_TIME = 10;
+	private static final int WAIT_TIME = 120;
 
 	private WebDriver driver;
 	private WebDriverWait wait;
@@ -33,7 +33,7 @@ public class ExtractorsSession {
 	public ExtractorsSession() {
 		this.extractors = new ArrayList<Extractor>();
 		this.parameters = new HashMap<String, Object>();
-		this.tmpDir = System.getProperty("java.io.tmpdir") + File.separatorChar + "exsedir";
+		this.tmpDir = System.getProperty("java.io.tmpdir");
 
 		File tmpDir = new File(this.tmpDir);
 		if (!tmpDir.exists()) {
@@ -68,9 +68,13 @@ public class ExtractorsSession {
 		return this.wait;
 	}
 
-	public String getTmpDir() {
+	public String getTmpDirDownload() {
 
-		return this.tmpDir;
+		return this.tmpDir + File.separatorChar + "exsedir";
+	}
+	
+	public String getTmpDir() {
+		return tmpDir;
 	}
 
 	public void run() {
@@ -80,7 +84,7 @@ public class ExtractorsSession {
 		logger.log(Level.INFO, "Openning web driver");
 
 		FirefoxProfile profile = new FirefoxProfile();
-		profile.setPreference("browser.download.dir", this.getTmpDir());
+		profile.setPreference("browser.download.dir", this.getTmpDirDownload());
 		profile.setPreference("browser.download.folderList", 2);
 		profile.setPreference("browser.helperApps.neverAsk.saveToDisk", "application/pdf");
 		profile.setPreference("browser.download.manager.showWhenStarting", false);
