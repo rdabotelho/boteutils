@@ -66,6 +66,9 @@ public enum FlatFieldTypeEnum {
 			return Float.parseFloat(this.prepareValue(value));
 		}
 		else if (clazz.equals(Date.class)) {
+			if (value.equals("000000")) {
+				return null;
+			}
 			try {
 				return dateFormat.parse(this.prepareValue(value));
 			} catch (ParseException e) {

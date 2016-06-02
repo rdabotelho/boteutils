@@ -2,11 +2,11 @@ package com.m2r.boteutils.flatfile;
 
 import static org.junit.Assert.fail;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -19,6 +19,8 @@ import com.m2r.flatfile.exception.FlatFileException;
 
 
 public class FlatFileTest {
+
+	private static final SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
 
 	@Test
 	public void test1() {
@@ -98,21 +100,43 @@ public class FlatFileTest {
 
 	}
 
-	public void test3() throws FileNotFoundException {
-		InputStream in = new FileInputStream("C:\\Users\\raimundo.botelho\\Downloads\\IEDCBR3051705201610655.ret");
+	@Test
+	public void test3() {
+		InputStream in = this.getClass().getResourceAsStream("CBR643321106201610456.ret");
 		Reader reader = new InputStreamReader(in);
 
 		FlatFile flatFile = new FlatFile();
 
-		flatFile.registerRecord(com.m2r.boteutils.flatfile.modelo2.HeaderRetorno.class);
-		flatFile.registerRecord(com.m2r.boteutils.flatfile.modelo2.HeaderLoteRetorno.class);
-		flatFile.registerRecord(com.m2r.boteutils.flatfile.modelo2.DetailRetorno.class);
+		flatFile.registerRecord(HeaderRetorno.class);
+		flatFile.registerRecord(DetailRetorno.class);
+		flatFile.registerRecord(TraillerRetorno.class);
 
 		try {
 			flatFile.load(reader);
-			while (flatFile.hasNextRecord()) {
-				System.out.println(flatFile.nextRecord());
+			if (flatFile.hasNextRecord()) {
+				HeaderRetorno header = (HeaderRetorno) flatFile.nextRecord();
+				Assert.assertNotNull(header);
+				Assert.assertEquals(header.getId(), new Integer(0));
+				Assert.assertEquals(header.getSequencialRegistro(), new Integer(1));
 			}
+			if (flatFile.hasNextRecord()) {
+				DetailRetorno detalhe = (DetailRetorno) flatFile.nextRecord();
+				Assert.assertNotNull(detalhe);
+				Assert.assertEquals(detalhe.getId(), new Integer(7));
+				Assert.assertEquals(detalhe.getCarteira(), "17");
+				Assert.assertNull(detalhe.getDataVencimento());
+				Assert.assertEquals(dateformat.format(detalhe.getDataLiquidacao()), "01/06/2016");
+				Assert.assertEquals(detalhe.getValorTitulo(), new BigDecimal("3.00"));
+				Assert.assertEquals(detalhe.getSequencialRegistro(), new Integer(3));
+			}
+			if (flatFile.hasNextRecord()) {
+				TraillerRetorno trailler = (TraillerRetorno) flatFile.nextRecord();
+				Assert.assertNotNull(trailler);
+				Assert.assertEquals(trailler.getId(), new Integer(9));
+				Assert.assertEquals(trailler.getSequencialRegistro(), new Integer(2));
+			}
+			Assert.assertFalse(flatFile.hasNextRecord());
+
 		} catch (FlatFileException e) {
 			e.printStackTrace();
 			fail(e.getMessage());

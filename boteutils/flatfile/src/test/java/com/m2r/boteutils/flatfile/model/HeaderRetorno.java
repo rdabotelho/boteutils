@@ -2,7 +2,9 @@ package com.m2r.boteutils.flatfile.model;
 
 import static com.m2r.flatfile.enumeration.FlatFieldTypeEnum.INTEGER;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.m2r.flatfile.annotation.FlatField;
 import com.m2r.flatfile.enumeration.FlatFieldTypeEnum;
@@ -36,6 +38,7 @@ public class HeaderRetorno {
 	@FlatField(begin=394, end=400, converter=INTEGER)
 	private Integer sequencialRegistro;
 
+	private List<DetailRetorno> details = new ArrayList<DetailRetorno>();
 
 	public Integer getId() {
 
@@ -144,19 +147,33 @@ public class HeaderRetorno {
 		this.sequencialRegistro = sequencialRegistro;
 	}
 
+
+	public List<DetailRetorno> getDetails() {
+
+		return this.details;
+	}
+
+
+
+	public void setDetails(List<DetailRetorno> details) {
+
+		this.details = details;
+	}
+
+
 	@Override
 	public String toString() {
 
 		return String.format("[id: %s, operacao: %s, servico: %s, agencia: %s, conta: %s, nomeCedente: %s, dataArquivo: %s, sequencialArquivo: %s, sequencialRegistro: %s]",
-			this.id != null ? this.id : "",
-			this.operacao != null ? this.operacao : "",
-			this.servico != null ? this.servico : "",
-			this.agencia != null ? this.agencia : "",
-			this.conta != null ? this.conta : "",
-			this.nomeCedente != null ? this.nomeCedente : "",
-			this.dataArquivo != null ? this.dataArquivo : "",
-			this.sequencialArquivo != null ? this.sequencialArquivo : "",
-			this.sequencialRegistro != null ? this.sequencialRegistro : "");
+						this.id != null ? this.id : "",
+										this.operacao != null ? this.operacao : "",
+														this.servico != null ? this.servico : "",
+																		this.agencia != null ? this.agencia : "",
+																						this.conta != null ? this.conta : "",
+																										this.nomeCedente != null ? this.nomeCedente : "",
+																														this.dataArquivo != null ? this.dataArquivo : "",
+																																		this.sequencialArquivo != null ? this.sequencialArquivo : "",
+																																						this.sequencialRegistro != null ? this.sequencialRegistro : "");
 	}
 
 }
