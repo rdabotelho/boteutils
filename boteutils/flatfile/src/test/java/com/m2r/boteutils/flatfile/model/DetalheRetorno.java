@@ -8,7 +8,7 @@ import java.util.Date;
 import com.m2r.flatfile.annotation.FlatField;
 import com.m2r.flatfile.enumeration.FlatFieldTypeEnum;
 
-public class DetailRetorno {
+public class DetalheRetorno {
 
 	@FlatField(begin = 0, end = 1, converter = INTEGER, id = "7")
 	private Integer id;

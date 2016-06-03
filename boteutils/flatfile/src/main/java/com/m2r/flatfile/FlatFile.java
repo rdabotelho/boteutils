@@ -4,18 +4,23 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Field;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.m2r.flatfile.annotation.FlatField;
 import com.m2r.flatfile.enumeration.FlatFieldTypeEnum;
+import com.m2r.flatfile.enums.FlatFileMessageEnum;
 import com.m2r.flatfile.exception.FlatFileException;
 
 public class FlatFile {
 
 	private static Logger logger = Logger.getLogger(FlatFile.class.getSimpleName());
+
+	private static ResourceBundle resourceBundle;
 
 	private Class<?> readedClass;
 	private Field readefField;
@@ -52,7 +57,7 @@ public class FlatFile {
 		return !this.isEnd;
 	}
 
-	public Object nextRecord() {
+	public Object nextRecord() throws FlatFileException {
 		try {
 			Class<?> clazz = this.getFlatFieldClass();
 			Object object = null;
@@ -65,9 +70,8 @@ public class FlatFile {
 			return object;
 		}
 		catch (Exception e) {
-			logger.log(Level.SEVERE, String.format("Erro in field '%s' of record '%s'", (this.readefField != null ? this.readefField.getName() : ""), (this.readedClass != null ? this.readedClass.getSimpleName() : "")), e);
 			this.reset();
-			return null;
+			throw this.erro(FlatFileMessageEnum.ERRO_NEXT_RECORD, e, (this.readefField != null ? this.readefField.getName() : ""), (this.readedClass != null ? this.readedClass.getSimpleName() : ""));
 		}
 	}
 
@@ -126,8 +130,8 @@ public class FlatFile {
 		for (Field field : clazz.getDeclaredFields()) {
 			this.readefField = field;
 			ff = field.getAnnotation(FlatField.class);
-			ffe = ff.converter();
 			if (ff != null) {
+				ffe = ff.converter();
 				value = ffe.convert(field.getType(), this.line.substring(ff.begin(), ff.end()));
 				field.setAccessible(true);
 				field.set(object, value);
@@ -135,6 +139,19 @@ public class FlatFile {
 			}
 		}
 		return object;
+	}
+
+	private FlatFileException erro(FlatFileMessageEnum msg, Throwable cause, Object ... params) throws FlatFileException {
+		String text = MessageFormat.format(getResourceBundle().getString(msg.getKey()), params);
+		logger.log(Level.SEVERE, text, cause);
+		return new FlatFileException(text, cause);
+	}
+
+	public static ResourceBundle getResourceBundle() {
+		if (resourceBundle == null) {
+			resourceBundle = ResourceBundle.getBundle("FlatfileMessages");
+		}
+		return resourceBundle;
 	}
 
 }

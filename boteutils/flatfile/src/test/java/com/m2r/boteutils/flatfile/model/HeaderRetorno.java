@@ -38,7 +38,7 @@ public class HeaderRetorno {
 	@FlatField(begin=394, end=400, converter=INTEGER)
 	private Integer sequencialRegistro;
 
-	private List<DetailRetorno> details = new ArrayList<DetailRetorno>();
+	private List<DetalheRetorno> details = new ArrayList<DetalheRetorno>();
 
 	public Integer getId() {
 
@@ -148,14 +148,14 @@ public class HeaderRetorno {
 	}
 
 
-	public List<DetailRetorno> getDetails() {
+	public List<DetalheRetorno> getDetails() {
 
 		return this.details;
 	}
 
 
 
-	public void setDetails(List<DetailRetorno> details) {
+	public void setDetails(List<DetalheRetorno> details) {
 
 		this.details = details;
 	}

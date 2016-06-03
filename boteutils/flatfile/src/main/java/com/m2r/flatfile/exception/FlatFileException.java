@@ -13,4 +13,8 @@ public class FlatFileException extends Exception {
 		super(cause);
 	}
 
+	public FlatFileException(String msg, Throwable cause) {
+		super(msg, cause);
+	}
+
 }

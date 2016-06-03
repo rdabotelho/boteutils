@@ -9,7 +9,7 @@
 	
 	<groupId>com.m2r.boteutils</groupId>
 	<artifactId>flatfile</artifactId>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.3</version>
 	<packaging>jar</packaging>
 	
 	<name>flatfile</name>
