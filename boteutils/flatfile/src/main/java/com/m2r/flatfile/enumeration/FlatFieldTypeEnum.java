@@ -51,11 +51,13 @@ public enum FlatFieldTypeEnum {
 		}
 	};
 
-	private static SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyy");
+	private static String DEFAULT_DATE_PATTERN = "ddMMyy";
+
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat();
 
 	protected abstract String prepareValue(String value);
 
-	public Object convert(Class<?> clazz, String value) {
+	public Object convert(Class<?> clazz, String value, String pattern) {
 		if (clazz.equals(BigDecimal.class)) {
 			return new BigDecimal(this.prepareValue(value));
 		}
@@ -70,6 +72,12 @@ public enum FlatFieldTypeEnum {
 				return null;
 			}
 			try {
+				if (pattern.equals("")) {
+					dateFormat.applyPattern(DEFAULT_DATE_PATTERN);
+				}
+				else {
+					dateFormat.applyPattern(pattern);
+				}
 				return dateFormat.parse(this.prepareValue(value));
 			} catch (ParseException e) {
 				e.printStackTrace();

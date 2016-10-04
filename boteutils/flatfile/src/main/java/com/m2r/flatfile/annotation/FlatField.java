@@ -15,6 +15,7 @@ public @interface FlatField {
 	int begin();
 	int end();
 	FlatFieldTypeEnum converter() default FlatFieldTypeEnum.STRING;
+	String pattern() default "";
 	String id() default "";
 	boolean showToString() default true;
 

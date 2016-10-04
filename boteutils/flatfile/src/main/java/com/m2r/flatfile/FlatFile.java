@@ -132,7 +132,7 @@ public class FlatFile {
 			ff = field.getAnnotation(FlatField.class);
 			if (ff != null) {
 				ffe = ff.converter();
-				value = ffe.convert(field.getType(), this.line.substring(ff.begin(), ff.end()));
+				value = ffe.convert(field.getType(), this.line.substring(ff.begin(), ff.end()), ff.pattern());
 				field.setAccessible(true);
 				field.set(object, value);
 				field.setAccessible(false);

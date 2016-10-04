@@ -31,7 +31,7 @@ public class DetalheRetorno {
 	@FlatField(begin = 106, end = 108)
 	private String carteira;
 
-	@FlatField(begin = 110, end = 116, converter = FlatFieldTypeEnum.DATE)
+	@FlatField(begin = 110, end = 116, converter = FlatFieldTypeEnum.DATE, pattern = "ddMMyy")
 	private Date dataLiquidacao;
 
 	@FlatField(begin = 116, end = 126)
@@ -260,15 +260,15 @@ public class DetalheRetorno {
 	@Override
 	public String toString() {
 		return String.format("[id: %s, nossoNumero: %s, carteira: %s, dataLiquidacao: %s, numeroTitulo: %s, dataVencimento: %s, valorTitulo: %s, valorLancamento: %s, sequencialRegistro: %s]",
-			this.id != null ? this.id : "",
-			this.nossoNumero != null ? this.nossoNumero : "",
-			this.carteira != null ? this.carteira : "",
-			this.dataLiquidacao != null ? this.dataLiquidacao : "",
-			this.numeroTitulo != null ? this.numeroTitulo : "",
-			this.dataVencimento != null ? this.dataVencimento : "",
-			this.valorTitulo != null ? this.valorTitulo : "",
-			this.valorLancamento != null ? this.valorLancamento : "",
-			this.sequencialRegistro != null ? this.sequencialRegistro : "");
+						this.id != null ? this.id : "",
+										this.nossoNumero != null ? this.nossoNumero : "",
+														this.carteira != null ? this.carteira : "",
+																		this.dataLiquidacao != null ? this.dataLiquidacao : "",
+																						this.numeroTitulo != null ? this.numeroTitulo : "",
+																										this.dataVencimento != null ? this.dataVencimento : "",
+																														this.valorTitulo != null ? this.valorTitulo : "",
+																																		this.valorLancamento != null ? this.valorLancamento : "",
+																																						this.sequencialRegistro != null ? this.sequencialRegistro : "");
 	}
 
 }

@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
 import org.junit.Assert;
+import org.junit.Test;
 
 import com.m2r.boteutils.flatfile.model.DetalheRetorno;
 import com.m2r.boteutils.flatfile.model.HeaderRetorno;
@@ -21,7 +22,7 @@ public class FlatFileTest {
 
 	private static final SimpleDateFormat dateformat = new SimpleDateFormat("dd/MM/yyyy");
 
-	//@Test
+	@Test
 	public void test1() {
 		InputStream in = this.getClass().getResourceAsStream("file.ret");
 		Reader reader = new InputStreamReader(in);
@@ -65,7 +66,7 @@ public class FlatFileTest {
 
 	}
 
-	//@Test
+	@Test
 	public void test2() {
 		InputStream in = this.getClass().getResourceAsStream("CBR6433142405201610409.ret");
 		Reader reader = new InputStreamReader(in);
