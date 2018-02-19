@@ -49,8 +49,54 @@ public enum FlatFieldTypeEnum {
 		public String prepareValue(String value) {
 			return value;
 		}
+	},
+
+	DATE_YYMMDD {
+		private String DATE_PATTERN = "yyMMdd";
+		@Override
+		public String prepareValue(String value) {
+			return value;
+		}
+		protected String getDatePattern() {
+			return DATE_PATTERN;
+		}
+	},
+
+	DATE_YYYYMMDD {
+		private String DATE_PATTERN = "yyyyMMdd";
+		@Override
+		public String prepareValue(String value) {
+			return value;
+		}
+		protected String getDatePattern() {
+			return DATE_PATTERN;
+		}
+	},
+
+	DATE_DDMMYY {
+		private String DATE_PATTERN = "ddMMyy";
+		@Override
+		public String prepareValue(String value) {
+			return value;
+		}
+		protected String getDatePattern() {
+			return DATE_PATTERN;
+		}
+	},
+
+	DATE_DDMMYYYY {
+		private String DATE_PATTERN = "ddMMyyyy";
+		@Override
+		public String prepareValue(String value) {
+			return value;
+		}
+		protected String getDatePattern() {
+			return DATE_PATTERN;
+		}
 	};
 
+	private static String ZEROS = "0000000000";
+	
 	private static String DEFAULT_DATE_PATTERN = "ddMMyy";
 
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -68,15 +114,15 @@ public enum FlatFieldTypeEnum {
 			return Float.parseFloat(this.prepareValue(value));
 		}
 		else if (clazz.equals(Date.class)) {
-			if (value.equals("000000")) {
+			if (value.equals(getEmptyZeroDate())) {
 				return null;
 			}
 			try {
-				if (pattern.equals("")) {
-					dateFormat.applyPattern(DEFAULT_DATE_PATTERN);
+				if ("".equals(pattern)) {
+					dateFormat.applyPattern(this.getDatePattern());
 				}
 				else {
-					dateFormat.applyPattern(pattern);
+					dateFormat.applyPattern(pattern);					
 				}
 				return dateFormat.parse(this.prepareValue(value));
 			} catch (ParseException e) {
@@ -87,6 +133,14 @@ public enum FlatFieldTypeEnum {
 		else {
 			return this.prepareValue(value);
 		}
+	}
+	
+	protected String getDatePattern() {
+		return DEFAULT_DATE_PATTERN;
+	}
+	
+	private String getEmptyZeroDate() {
+		return ZEROS.substring(0, getDatePattern().length());
 	}
 
 }
