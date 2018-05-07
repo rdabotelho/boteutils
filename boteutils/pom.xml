@@ -20,6 +20,7 @@
 		<module>flatfile</module>
 		<module>extractor</module>
 		<module>ksutils</module>
+		<module>scaffolding</module>
 	</modules>
 
 	<dependencyManagement>

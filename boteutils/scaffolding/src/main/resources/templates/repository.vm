@@ -1,0 +1,7 @@
+package $modelClass.repositoryPackage;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import $modelClass.name;
+
+public interface $modelClass.repositorySimpleName extends JpaRepository<$modelClass.simpleName, Long> {	
+}
