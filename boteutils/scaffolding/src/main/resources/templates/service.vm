@@ -1,0 +1,40 @@
+package $modelClass.servicePackage;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.ejb.Stateless;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import $modelClass.name;
+import $modelClass.repositoryName;
+#set ($repositoryBaseName = "${modelClass.basePackage}.utils.Repository")
+import $repositoryBaseName;
+
+@Stateless
+public class $modelClass.serviceSimpleName extends CrudService<$modelClass.simpleName,Long> {
+
+	private static final long serialVersionUID = 1L;
+	
+	@Repository
+	$modelClass.repositorySimpleName $modelClass.repositoryInstanceName;
+
+	@Override
+	protected JpaRepository<$modelClass.simpleName, Long> getRepository() {
+		return $modelClass.repositoryInstanceName;
+	}
+
+	@Override
+	public Predicate[] filter(CriteriaBuilder builder, Root<$modelClass.simpleName> root, $modelClass.simpleName filter) {
+		List<Predicate> predicates = new ArrayList<>();
+		//if (filter.getAttributeName() != null) {
+		//	predicates.add(builder.equal(root.get("attributeName"), filter.getAttributeName()));
+		//}
+		return predicates.toArray(new Predicate[predicates.size()]);
+	}
+
+}

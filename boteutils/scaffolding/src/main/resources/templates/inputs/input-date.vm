@@ -1,0 +1,4 @@
+			<h:panelGroup>
+				<p:outputLabel for="${id}" value="#{label.$id}"/><br/>
+        		<p:calendar id="${id}" value="#{${value}}" showOn="button" $utils.attribute("mask",$field.mask) $utils.attribute("pattern",$field.pattern) />
+       		</h:panelGroup>

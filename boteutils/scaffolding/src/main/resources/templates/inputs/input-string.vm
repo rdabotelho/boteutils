@@ -1,0 +1,4 @@
+			<h:panelGroup>
+				<p:outputLabel for="${id}" value="#{label.$id}"/><br/>
+        		<p:inputText id="${id}" value="#{${value}}" maxlength="10"/>
+       		</h:panelGroup>

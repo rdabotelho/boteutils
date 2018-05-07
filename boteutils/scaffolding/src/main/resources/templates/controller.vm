@@ -1,0 +1,33 @@
+package $modelClass.controllerPackage;
+
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import $modelClass.name;
+import $modelClass.serviceName;
+#set ($crudServiceName = "${modelClass.servicePackage}.CrudService")
+import $crudServiceName;
+
+#set ($iconName = "${modelClass.simpleName}_icon")
+@Named
+@SessionScoped
+public class $modelClass.controllerSimpleName extends CrudController<$modelClass.simpleName,Long> {
+
+	private static final long serialVersionUID = 1L;
+	private static final String $iconName.toUpperCase() = "fa-file-o";
+	
+	@Inject
+	$modelClass.serviceSimpleName $modelClass.serviceInstanceName;
+
+	@Override
+	public String getIcon() {
+		return $iconName.toUpperCase();
+	}
+	
+	@Override
+	protected CrudService<$modelClass.simpleName, Long> getCrudService() {
+		return this.$modelClass.serviceInstanceName;
+	}	
+	
+}

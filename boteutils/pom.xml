@@ -21,6 +21,7 @@
 		<module>extractor</module>
 		<module>ksutils</module>
 		<module>scaffolding</module>
+		<module>scaffolding-utils</module>
 	</modules>
 
 	<dependencyManagement>
