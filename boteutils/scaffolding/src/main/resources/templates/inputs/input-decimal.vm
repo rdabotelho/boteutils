@@ -1,4 +1,4 @@
 			<h:panelGroup>
-				<p:outputLabel for="${id}" value="#{label.$id}"/><br/>
-       			<p:inputNumber id="${id}" value="#{${value}}" $utils.attribute("decimalPlaces",$field.decimalPlaces) $utils.attribute("decimalSeparator",$field.decimalSeparator) $utils.attribute("symbol",$field.symbol) />
+				<p:outputLabel for="${id}" value="${label}"/><br/>
+       			<p:inputNumber id="${id}" value="${value}" $utils.attribute("decimalPlaces",$field.decimalPlaces) $utils.attribute("decimalSeparator",$field.decimalSeparator) $utils.attribute("symbol",$field.symbol) />
        		</h:panelGroup>

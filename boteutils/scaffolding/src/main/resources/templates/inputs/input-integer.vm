@@ -1,4 +1,4 @@
 			<h:panelGroup>
-				<p:outputLabel for="${id}" value="#{label.$id}"/><br/>
-        		<p:inputNumber id="${id}" value="#{${value}}" decimalPlaces="0"/>
+				<p:outputLabel for="${id}" value="${label}"/><br/>
+        		<p:inputNumber id="${id}" value="${value}" decimalPlaces="0"/>
        		</h:panelGroup>

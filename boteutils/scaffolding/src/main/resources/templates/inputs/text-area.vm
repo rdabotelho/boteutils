@@ -1,4 +1,4 @@
 			<h:panelGroup>
-				<p:outputLabel for="${id}" value="#{label.$id}"/><br/>
-				<p:inputTextarea id="${id}" value="#{${value}}" rows="5" cols="50" />
+				<p:outputLabel for="${id}" value="${label}"/><br/>
+				<p:inputTextarea id="${id}" value="${value}" rows="5" cols="50" />
        		</h:panelGroup>

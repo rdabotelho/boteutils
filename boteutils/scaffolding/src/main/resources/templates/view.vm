@@ -6,11 +6,12 @@
 	template="/templates/template-crud.xhtml">
 
 	<ui:define name="search">
-		<p:panelGrid columns="3" columnClasses="ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">			
+		<p:panelGrid columns="3" columnClasses="ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
 #foreach($field in $modelClass.viewedFields)
 	#if($field.viewed)
 		#set($id = "${field.name}Filter")
-		#set($value = "${modelClass.controllerInstanceName}.filter.${field.name}")
+		#set($label = "#{label.${field.name}}")
+		#set($value = "#{${modelClass.controllerInstanceName}.filter.${field.name}}")
 		#if($field.stringType)
 		
 #parse("./inputs/input-string.vm")
