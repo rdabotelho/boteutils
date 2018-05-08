@@ -1,0 +1,7 @@
+			<h:panelGroup>
+				<p:outputLabel for="${id}" value="${label}"/><br/>
+	        		<p:selectOneMenu id="${id}" value="${value}">
+	        			<f:selectItem itemLabel="" itemValue="#{null}" />
+	        			<f:selectItems value="#{$field.enumItemsNamed}" var="item" itemLabel="#{msg[item.descricao]}" itemValue="#{item}" />
+	        		</p:selectOneMenu>
+       		</h:panelGroup>

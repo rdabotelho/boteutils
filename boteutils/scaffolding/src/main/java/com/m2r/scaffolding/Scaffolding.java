@@ -37,9 +37,12 @@ public class Scaffolding {
 
 	public void generateRepository() {
 		try {
-			String fileName = getModelClass().getRepositoryPath();
-			this.margeAndSaveFromTemplate(fileName, "repository.vm");
-			mojo.getLog().info("Created repository: " + fileName);
+			File file = new File(getModelClass().getRepositoryPath());
+			if (file.exists()) {
+				file = new File(file.getPath()+".tmp");
+			}
+			this.margeAndSaveFromTemplate(file, "repository.vm");
+			mojo.getLog().info("Created repository: " + file.getPath());
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -48,9 +51,12 @@ public class Scaffolding {
 	
 	public void generateService() {
 		try {
-			String fileName = getModelClass().getServicePath();
-			this.margeAndSaveFromTemplate(fileName, "service.vm");
-			mojo.getLog().info("Created service: " + fileName);
+			File file = new File(getModelClass().getServicePath());
+			if (file.exists()) {
+				file = new File(file.getPath()+".tmp");
+			}
+			this.margeAndSaveFromTemplate(file, "service.vm");
+			mojo.getLog().info("Created service: " + file.getPath());
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -59,9 +65,12 @@ public class Scaffolding {
 	
 	public void generateController() {
 		try {
-			String fileName = getModelClass().getControllerPath();
-			this.margeAndSaveFromTemplate(fileName, "controller.vm");
-			mojo.getLog().info("Created controller: " + fileName);
+			File file = new File(getModelClass().getControllerPath());
+			if (file.exists()) {
+				file = new File(file.getPath()+".tmp");
+			}
+			this.margeAndSaveFromTemplate(file, "controller.vm");
+			mojo.getLog().info("Created controller: " + file.getPath());
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -70,9 +79,12 @@ public class Scaffolding {
 	
 	public void generateView() {
 		try {
-			String fileName = getModelClass().getViewPath();
-			this.margeAndSaveFromTemplate(fileName, "view.vm", "inputs/input-string.vm", "inputs/input-date.vm", "inputs/input-decimal.vm", "inputs/input-integer.vm", "inputs/text-area.vm");
-			mojo.getLog().info("Created view: " + fileName);
+			File file = new File(getModelClass().getViewPath());
+			if (file.exists()) {
+				file = new File(file.getPath()+".tmp");
+			}
+			this.margeAndSaveFromTemplate(file, "view.vm", "inputs/input-string.vm", "inputs/input-date.vm", "inputs/input-decimal.vm", "inputs/input-integer.vm", "inputs/text-area.vm", "inputs/select-enum.vm");
+			mojo.getLog().info("Created view: " + file.getPath());
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
@@ -161,8 +173,7 @@ public class Scaffolding {
 		return modelClass;
 	}
 
-	private void margeAndSaveFromTemplate(String fileName, String ... templatesNames) throws Exception {	
-		File file = new File(fileName);
+	private void margeAndSaveFromTemplate(File file, String ... templatesNames) throws Exception {	
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}

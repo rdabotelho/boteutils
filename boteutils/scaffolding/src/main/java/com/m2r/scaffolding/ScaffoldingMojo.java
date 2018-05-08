@@ -1,5 +1,8 @@
 package com.m2r.scaffolding;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -26,7 +29,10 @@ public class ScaffoldingMojo extends AbstractMojo {
 			throw new MojoExecutionException("Parameter basePackage doesn't defined!");
 		}
 		if (model == null) {
-			throw new MojoExecutionException("Parameter model doesn't defined!");
+			model = readFromConsole("[INFO] --- Enter with the Model: ");	
+			if (model == null || model.equals("")) {
+				throw new MojoExecutionException("Parameter model doesn't defined!");
+			}
 		}		
 	}
 	
@@ -41,5 +47,16 @@ public class ScaffoldingMojo extends AbstractMojo {
 		scaffolding.generateLabelProperties();
 		scaffolding.generateView();
 	}
+	
+    private static String readFromConsole(String prompt) {
+		try {
+	    		BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
+	    		System.out.print(prompt);
+	    		return br.readLine();
+		}
+		catch (Exception e) {
+			return null;
+		}
+    }	
 
 }

@@ -25,8 +25,9 @@ public class FieldAdapter {
 	private String decimalSeparator;
 	private String symbol;
 	private String pattern;
-	private String textAlign;
 	private boolean isRequired;
+	private boolean isViewedOnTable;
+	private String columnWidth;
 
 	public FieldAdapter(Field field) {
 		this.field = field;
@@ -45,16 +46,15 @@ public class FieldAdapter {
 		decimalSeparator = scaffoldingAnnotation != null && !scaffoldingAnnotation.decimalSeparator().equals("") ? scaffoldingAnnotation.decimalSeparator() : null;
 		symbol = scaffoldingAnnotation != null && !scaffoldingAnnotation.symbol().equals("") ? scaffoldingAnnotation.symbol() : null;
 		pattern = scaffoldingAnnotation != null && !scaffoldingAnnotation.pattern().equals("") ? scaffoldingAnnotation.pattern() : null;
-		textAlign = scaffoldingAnnotation != null && !scaffoldingAnnotation.textAlign().equals("") ? scaffoldingAnnotation.textAlign() : null;
-		isRequired = (scaffoldingAnnotation != null && scaffoldingAnnotation.isRequired()) || (isAnnotationPresent("javax.validation.constraints.NotNull","org.hibernate.validator.constraints.NotBlank"));
+		isRequired = (scaffoldingAnnotation != null && scaffoldingAnnotation.isRequired()) || (isAnnotationPresent("nullable=false"));
+		isViewedOnTable = scaffoldingAnnotation != null && scaffoldingAnnotation.isViewedOnTable();
+		columnWidth = scaffoldingAnnotation != null && !scaffoldingAnnotation.columnWidth().equals("") ? scaffoldingAnnotation.columnWidth() : null;
 	}
 	
-	public boolean isAnnotationPresent(final String ... names) {
+	public boolean isAnnotationPresent(final String content) {
 		for (Annotation a : field.getAnnotations()) {
-			for (String n : names) {
-				if (a.annotationType().getName().equals(n)) {
-					return true;
-				}
+			if (a.annotationType().getName().equals(content) || a.toString().contains(content)) {
+				return true;
 			}
 		}
 		return false;
@@ -108,16 +108,24 @@ public class FieldAdapter {
 		return pattern != null;
 	}
 
-	public String getTextAlign() {
-		return textAlign;
-	}
-	
 	public boolean isRequired() {
 		return isRequired;
+	}
+	
+	public boolean isViewedOnTable() {
+		return isViewedOnTable;
+	}
+	
+	public String getColumnWidth() {
+		return columnWidth;
 	}
 
 	public Field getField() {
 		return field;
+	}
+	
+	public String getEnumItemsNamed() {
+		return "tipos" + field.getType().getSimpleName().replaceAll("Enum", "s");
 	}
 	
 	public boolean isStringType() {

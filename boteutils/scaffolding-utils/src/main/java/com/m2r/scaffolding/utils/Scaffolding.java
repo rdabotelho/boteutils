@@ -20,8 +20,8 @@ public @interface Scaffolding {
 	String decimalSeparator() default "";
 	String symbol() default "";
 	String pattern() default "";
-	String textAlign() default "";
 	boolean isRequired() default false;
-	
+	boolean isViewedOnTable() default false;
+	String columnWidth() default "";
 	
 }
