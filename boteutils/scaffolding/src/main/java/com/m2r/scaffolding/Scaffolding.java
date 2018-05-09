@@ -2,9 +2,12 @@ package com.m2r.scaffolding;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Map;
 import java.util.Properties;
@@ -115,7 +118,8 @@ public class Scaffolding {
 				}
 			}
 			String letter = "";
-			FileWriter writer = new FileWriter(fileName);
+			//FileWriter writer = new FileWriter(fileName);
+			OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fileName), StandardCharsets.ISO_8859_1);
 			for (Object key : map.keySet()) {
 				if (!key.toString().substring(0,1).toUpperCase().equals(letter)) {
 					if (!letter.equals("")) {
@@ -127,6 +131,7 @@ public class Scaffolding {
 				writer.write(key.toString() + "=" + map.get(key).toString() + "\n");
 			}
 			writer.close();
+			
 			mojo.getLog().info("Created label properties: " + fileName);
 		} 
 		catch (Exception e) {

@@ -31,9 +31,17 @@ public class $modelClass.serviceSimpleName extends CrudService<$modelClass.simpl
 	@Override
 	public Predicate[] filter(CriteriaBuilder builder, Root<$modelClass.simpleName> root, $modelClass.simpleName filter) {
 		List<Predicate> predicates = new ArrayList<>();
-		//if (filter.getAttributeName() != null) {
-		//	predicates.add(builder.equal(root.get("attributeName"), filter.getAttributeName()));
-		//}
+#foreach($field in $modelClass.viewedFields)
+#if($field.filter)
+		if (filter.${field.getMethodName}() != null) {
+#if($field.stringType)	
+			predicates.add(builder.like(builder.upper(root.get("${field.name}")), "%"+filter.${field.getMethodName}().toUpperCase()+"%"));
+#else
+			predicates.add(builder.equal(root.get("${field.name}"), filter.${field.getMethodName}()));	
+#end
+		}
+#end		
+#end
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}
 

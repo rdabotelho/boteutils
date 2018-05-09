@@ -84,7 +84,7 @@
 	</ui:define>
 	
 	<ui:define name="list">
-	  <p:dataTable id="dataTableList" var="item" value="#{${modelClass.controllerInstanceName}.list}" reflow="true" rows="10" paginator="true" selectionMode="single" selection="#{${modelClass.controllerInstanceName}.model}" rowKey="#{item.id}">
+	  <p:dataTable id="dataTableList" var="item" value="#{${modelClass.controllerInstanceName}.list}" reflow="true" rows="10" paginator="true" selectionMode="single" selection="#{${modelClass.controllerInstanceName}.model}" rowKey="#{item.id}" lazy="true">
 	  	  <p:ajax event="rowSelect" listener="#{${modelClass.controllerInstanceName}.onRowSelect}" update="contentPanel"/>
 #foreach($field in $modelClass.viewedFields)
 	#if($field.viewedOnTable)

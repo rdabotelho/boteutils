@@ -64,6 +64,14 @@ public class FieldAdapter {
 		return field.getName();
 	}
 	
+	public String getGetMethodName() {
+		return "get" + getName().substring(0, 1).toUpperCase() + getName().substring(1);
+	}
+	
+	public String getSetMethodName() {
+		return "set" + getName().substring(0, 1).toUpperCase() + getName().substring(1);
+	}
+	
 	public Class<?> getType() {
 		return field.getType();
 	}
