@@ -29,7 +29,7 @@ public class ScaffoldingMojo extends AbstractMojo {
 			throw new MojoExecutionException("Parameter basePackage doesn't defined!");
 		}
 		if (model == null) {
-			model = readFromConsole("[INFO] --- Enter with the Model: ");	
+			model = ConsoleReader.readFromConsole("[INFO] --- Enter with the Model: ");	
 			if (model == null || model.equals("")) {
 				throw new MojoExecutionException("Parameter model doesn't defined!");
 			}
@@ -48,15 +48,4 @@ public class ScaffoldingMojo extends AbstractMojo {
 		scaffolding.generateView();
 	}
 	
-    private static String readFromConsole(String prompt) {
-		try {
-	    		BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
-	    		System.out.print(prompt);
-	    		return br.readLine();
-		}
-		catch (Exception e) {
-			return null;
-		}
-    }	
-
 }

@@ -153,18 +153,7 @@ public class ModalClassWrapper {
 	}
 	
 	public String getViewSimpleName() {
-		StringBuilder str = new StringBuilder();
-		for (char c : getModelInstanceName().toCharArray()) {
-			if (Character.isUpperCase(c)) {
-				str.append("-");
-			}
-			str.append(c);
-		}
-		return str.toString();
-	}
-	
-	public String getViewInstanceName() {
-		return getViewSimpleName().substring(0, 1).toLowerCase() + getViewSimpleName().substring(1);
+		return NameUtils.modelPropertyToViewName(getModelInstanceName());
 	}
 	
 	/*

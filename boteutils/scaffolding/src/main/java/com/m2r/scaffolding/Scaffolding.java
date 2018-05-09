@@ -38,6 +38,10 @@ public class Scaffolding {
 		modelClass = new ModalClassWrapper(loadModelClass(model), baseDir, basePackage);
 	}
 
+	public void generateModel() {
+		
+	}
+	
 	public void generateRepository() {
 		try {
 			File file = new File(getModelClass().getRepositoryPath());
