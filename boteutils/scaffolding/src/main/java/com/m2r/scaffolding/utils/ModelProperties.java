@@ -5,9 +5,10 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Enumeration;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.m2r.scaffolding.wrapper.ModelClass;
 import com.m2r.scaffolding.wrapper.ModelField;
@@ -18,14 +19,6 @@ public class ModelProperties {
 
 	public ModelProperties() {
 		map = new LinkedHashMap<>();
-	}
-	
-	public static void main(String[] args) {
-		ModelProperties m = new ModelProperties();
-		m.promptProperties();
-		ModelClass modelClass = m.convertToModelBase("/Users/botelho/kdi-BBTS/git_repository/elobato/elobato/elobato", "br.com.m2r.elobato");
-		System.out.println(m.map);
-		System.out.println(modelClass);
 	}
 	
 	public ModelClass convertToModelBase(String baseDir, String basePackage) {
@@ -45,6 +38,8 @@ public class ModelProperties {
 			boolean isFilter = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_FILTER.name() + "_" + id));
 			boolean isViewed = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_VIEWED.name() + "_" + id));
 			boolean isText = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_TYPE.name() + "_" + id));
+			String enumName = map.get(ModelPropertiesEnum.MODEL_PROPERTY_ENUM_NAME.name() + "_" + id);
+			String relatedModel = map.get(ModelPropertiesEnum.MODEL_PROPERTY_RELATED_MODEL.name() + "_" + id);
 			Integer maxLength = strToInteger(map.get(ModelPropertiesEnum.MODEL_PROPERTY_LENGTH.name() + "_" + id));
 			boolean isDisabled = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_DISABLED.name() + "_" + id));
 			String decimalPlaces = map.get(ModelPropertiesEnum.MODEL_PROPERTY_DECIMAL_PLACES.name() + "_" + id);
@@ -54,14 +49,16 @@ public class ModelProperties {
 			boolean isRequired = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_REQUIRED.name() + "_" + id));
 			boolean isViewedOnTable = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_VIEWED_ON_TABLE.name() + "_" + id));
 			String columnWidth = map.get(ModelPropertiesEnum.MODEL_PROPERTY_COLUMN_WIDTH.name() + "_" + id);
+			Integer percision = strToInteger(map.get(ModelPropertiesEnum.MODEL_PROPERTY_DECIMAL_PRECISION.name() + "_" + id));
+			Integer scale = strToInteger(map.get(ModelPropertiesEnum.MODEL_PROPERTY_DECIMAL_SCALE.name() + "_" + id));
 			
-			ModelField modelField = new ModelField(name, type, label, columnName, isFilter, isViewed, isText, maxLength, isDisabled, decimalPlaces, decimalSeparator, symbol, pattern, isRequired, isViewedOnTable, columnWidth);
+			ModelField modelField = new ModelField(name, type, label, columnName, isFilter, isViewed, isText, enumName, relatedModel,maxLength, isDisabled, decimalPlaces, decimalSeparator, symbol, pattern, isRequired, isViewedOnTable, columnWidth, percision, scale);
 			modelClass.addViewedField(modelField);
 			
 			id++;
 			name = map.get(ModelPropertiesEnum.MODEL_PROPERTY_NAME.name() + "_" + id);
 		}
-		
+		modelClass.extractImports();
 		return modelClass;
 	}
 	
@@ -78,7 +75,10 @@ public class ModelProperties {
 			case "8": return LocalDate.class;
 			case "9": return LocalTime.class;
 			case "10": return LocalDateTime.class;
-			case "11": return Enumeration.class;		
+			case "11": return ScaffoldEnum.class;
+			case "12": return ScaffoldModel.class;
+			case "13": return Set.class;
+			case "14": return List.class;
 		}
 		return null;
 	}
@@ -197,20 +197,47 @@ public class ModelProperties {
 					.append(ConsoleReader.INFO).append("9) Date (LocalTime)\n")
 					.append(ConsoleReader.INFO).append("10) Date (LocalDateTime)\n")
 					.append(ConsoleReader.INFO).append("11) Enumeration\n")
-					.append(ConsoleReader.INFO).append("12) ABORT\n")
+					.append(ConsoleReader.INFO).append("12) Model\n")
+					.append(ConsoleReader.INFO).append("13) Collection (Set)\n")
+					.append(ConsoleReader.INFO).append("14) Collection (List)\n")
+					.append(ConsoleReader.INFO).append("15) ABORT\n")
 					.append(ConsoleReader.INFO).append("(0): ");
 				return str.toString();
 			}	
 			@Override
 			public ModelPropertiesEnum treatPromptAndGoTo(String optionResult, Map<String, String> map) {
-				return savePromptResult(optionResult, map, 12, true, MODEL_PROPERTY_LENGTH);
+				return savePromptResult(optionResult, map, 15, true, MODEL_PROPERTY_ENUM_NAME);
 			}
+		},
+		MODEL_PROPERTY_ENUM_NAME("", true){
+			@Override
+			public boolean isShow(Map<String, String> map) {
+				return isType(map.get(MODEL_PROPERTY_TYPE.name()), "11");
+			}						
+		},
+		MODEL_PROPERTY_RELATED_MODEL("", true){
+			@Override
+			public boolean isShow(Map<String, String> map) {
+				return isType(map.get(MODEL_PROPERTY_TYPE.name()), "12", "13", "14");
+			}						
 		},
 		MODEL_PROPERTY_LENGTH("", false){
 			@Override
 			public boolean isShow(Map<String, String> map) {
 				return isType(map.get(MODEL_PROPERTY_TYPE.name()), "0", "1");
 			}
+		},
+		MODEL_PROPERTY_DECIMAL_PRECISION("19", false){
+			@Override
+			public boolean isShow(Map<String, String> map) {
+				return isType(map.get(MODEL_PROPERTY_TYPE.name()), "5", "6", "7");
+			}			
+		},
+		MODEL_PROPERTY_DECIMAL_SCALE("8", false){
+			@Override
+			public boolean isShow(Map<String, String> map) {
+				return isType(map.get(MODEL_PROPERTY_TYPE.name()), "5", "6", "7");
+			}			
 		},
 		MODEL_PROPERTY_DECIMAL_PLACES("", false){
 			@Override
@@ -233,7 +260,7 @@ public class ModelProperties {
 		MODEL_PROPERTY_DECIMAL_PATTERN("", false){
 			@Override
 			public boolean isShow(Map<String, String> map) {
-				return isType(map.get(MODEL_PROPERTY_TYPE.name()), "5", "6", "7", "9", "10");
+				return isType(map.get(MODEL_PROPERTY_TYPE.name()), "5", "6", "7", "8", "9", "10");
 			}						
 		},
 		MODEL_PROPERTY_COLUMN_WIDTH("", false),

@@ -5,8 +5,10 @@ import java.math.BigInteger;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
+import com.m2r.scaffolding.utils.ScaffoldEnum;
 import com.m2r.scaffolding.utils.ScaffoldModel;
 
 public class ModelField {
@@ -18,6 +20,8 @@ public class ModelField {
 	protected boolean isFilter;
 	protected boolean isViewed;
 	protected boolean isText;
+	protected String enumName;
+	protected String relatedModel;
 	protected Integer maxLength;
 	protected boolean isDisabled;
 	protected String decimalPlaces;
@@ -27,6 +31,8 @@ public class ModelField {
 	protected boolean isRequired;
 	protected boolean isViewedOnTable;
 	protected String columnWidth;
+	protected Integer precision;
+	protected Integer scale;
 
 	public ModelField(String name, Class<?> type) {
 		this.name = name;
@@ -34,14 +40,17 @@ public class ModelField {
 	}
 	
 	public ModelField(String name, Class<?> type, String label, String columnName, boolean isFilter, boolean isViewed, boolean isText,
+			String enumName, String relatedModel,
 			Integer maxLength, boolean isDisabled, String decimalPlaces, String decimalSeparator, String symbol,
-			String pattern, boolean isRequired, boolean isViewedOnTable, String columnWidth) {
+			String pattern, boolean isRequired, boolean isViewedOnTable, String columnWidth, Integer precision, Integer scale) {
 		this(name, type);
 		this.label = label;
 		this.columnName = columnName;
 		this.isFilter = isFilter;
 		this.isViewed = isViewed;
 		this.isText = isText;
+		this.enumName = enumName;
+		this.relatedModel = relatedModel;
 		this.maxLength = maxLength;
 		this.isDisabled = isDisabled;
 		this.decimalPlaces = decimalPlaces;
@@ -51,6 +60,8 @@ public class ModelField {
 		this.isRequired = isRequired;
 		this.isViewedOnTable = isViewedOnTable;
 		this.columnWidth = columnWidth;
+		this.precision = precision;
+		this.scale = scale;
 	}
 
 	public String getName() {
@@ -59,6 +70,21 @@ public class ModelField {
 	
 	public Class<?> getType() {
 		return type;
+	}
+	
+	public String getTypeSimpleName() {
+		if (isEnumType()) {
+			return getEnumName();
+		}
+		else if (isModelType()) {
+			return getRelatedModel();
+		}	
+		else if (isCollectionType()) {
+			return getType().getSimpleName() + "<" + getRelatedModel() + ">";
+		}	
+		else {
+			return getType().getSimpleName();			
+		}
 	}
 	
 	public String getLabel() {
@@ -79,6 +105,14 @@ public class ModelField {
 	
 	public Integer getMaxLength() {
 		return maxLength;
+	}
+	
+	public String getEnumName() {
+		return enumName;
+	}
+	
+	public String getRelatedModel() {
+		return relatedModel;
 	}
 	
 	public boolean isDisabled() {
@@ -116,6 +150,14 @@ public class ModelField {
 	public String getColumnWidth() {
 		return columnWidth;
 	}
+	
+	public Integer getPrecision() {
+		return precision;
+	}
+	
+	public Integer getScale() {
+		return scale;
+	}
 
 	public boolean isText() {
 		return isText;
@@ -149,17 +191,17 @@ public class ModelField {
 	}
 	
 	public boolean isEnumType() {
-		return getType().isEnum();
-	}
-	
-	public boolean isCollectionType() {
-		return getType().isAssignableFrom(Collections.class);
+		return getType().equals(ScaffoldEnum.class);
 	}
 	
 	public boolean isModelType() {
-		return getType().isAssignableFrom(ScaffoldModel.class);
+		return getType().equals(ScaffoldModel.class);
 	}
 	
+	public boolean isCollectionType() {
+		return getType().isAssignableFrom(Set.class) || getType().isAssignableFrom(List.class);
+	}
+
 	public boolean isLocalDateType() {
 		return getType().equals(LocalDate.class);
 	}

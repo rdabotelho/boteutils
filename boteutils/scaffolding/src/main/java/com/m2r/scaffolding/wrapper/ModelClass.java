@@ -92,6 +92,32 @@ public class ModelClass {
 		getViewedFields().add(field);
 	}
 	
+	public void extractImports() {
+		for (ModelField field : getViewedFields()) {
+			if (field.isEnumType()) {
+				imports.add("javax.persistence.Enumerated");				
+				imports.add("javax.persistence.EnumType");				
+			}
+			else if (field.isModelType()) {
+				imports.add("javax.persistence.OneToOne");
+			}
+			else if (field.isCollectionType()) {
+				imports.add("javax.persistence.OneToMany");
+			}
+			else if (field.isText) {
+				imports.add("javax.persistence.Lob");
+			}
+			else if (field.isRequired()) {
+				if (field.isStringType()) {
+					imports.add("org.hibernate.validator.constraints.NotBlank");
+				}
+				else {
+					imports.add("javax.validation.constraints.NotNull");					
+				}
+			}
+		}
+	}
+	
 	public List<ModelField> getViewedFields() {
 		return viewedFields;
 	}

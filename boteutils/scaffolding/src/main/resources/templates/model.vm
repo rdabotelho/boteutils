@@ -1,16 +1,12 @@
 package $modelClass.modelPackage;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Column;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.GenerationType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 import com.m2r.scaffolding.utils.ClassScaffold;
 import com.m2r.scaffolding.utils.FieldScaffold;
@@ -18,7 +14,6 @@ import com.m2r.scaffolding.utils.FieldScaffold;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.validator.constraints.NotBlank;
 
 #foreach($imp in $modelClass.imports)
 import $imp;
@@ -39,17 +34,29 @@ public class $modelClass.simpleName implements BaseModel<Long> {
 
 #foreach($field in $modelClass.viewedFields)
 #if($field.required)
+#if($field.textType)
+	@Lob
+#end
 #if($field.stringType)
 	@NotBlank
 #else
 	@NotNull
 #end
 #end
-	@Column(name = "${field.columnName}", nullable=$field.required$utils.attributeNumber(", length",${field.maxLength}))
-	@FieldScaffold(label="${field.label}", isfilter=${field.filter}, isViewed=${field.viewed}, isRequired=${field.required}${utils.attributeBool(", isDisabled",${field.disabled},false)}${utils.attributeBool(", isText",${field.text},false)}${utils.attributeBool(", isViewedOnTable",${field.viewedOnTable},false)}${utils.attributeNumber(", maxlength",${field.maxLength})}${utils.attribute(", decimalPlaces",${field.decimalPlaces})}${utils.attribute(", decimalSeparator",${field.decimalSeparator})}${utils.attribute(", symbol",${field.symbol})}${utils.attribute(", pattern",${field.pattern})}${utils.attribute(", columnWidth",${field.columnWidth})})
-	private ${field.type.simpleName} ${field.name};
-	
+#if($field.modelType)
+    @OneToOne
+#elseif($field.collectionType)
+	@OneToMany
+#else
+	@Column(name = "${field.columnName}", nullable=$field.required$utils.attributeNumber(", length",${field.maxLength})$utils.attributeNumber(", precision",${field.precision})$utils.attributeNumber(", scale",${field.scale}))
 #end
+#if($field.enumType)
+	@Enumerated(EnumType.STRING)
+#end
+	@FieldScaffold(label="${field.label}", isfilter=${field.filter}, isViewed=${field.viewed}, isRequired=${field.required}${utils.attributeBool(", isDisabled",${field.disabled},false)}${utils.attributeBool(", isText",${field.text},false)}${utils.attributeBool(", isViewedOnTable",${field.viewedOnTable},false)}${utils.attributeNumber(", maxlength",${field.maxLength})}${utils.attribute(", decimalPlaces",${field.decimalPlaces})}${utils.attribute(", decimalSeparator",${field.decimalSeparator})}${utils.attribute(", symbol",${field.symbol})}${utils.attribute(", pattern",${field.pattern})}${utils.attribute(", columnWidth",${field.columnWidth})})
+	private ${field.typeSimpleName} ${field.name};
+	
+#end	
 	@Override
 	public Long getId() {
 		return this.id;
@@ -60,11 +67,11 @@ public class $modelClass.simpleName implements BaseModel<Long> {
 	}
 
 #foreach($field in $modelClass.viewedFields)
-	public ${field.type.simpleName} ${field.getMethodName}() {
+	public ${field.typeSimpleName} ${field.getMethodName}() {
 		return ${field.name};
 	}
 
-	public void ${field.setMethodName}(${field.type.simpleName} ${field.name}) {
+	public void ${field.setMethodName}(${field.typeSimpleName} ${field.name}) {
 		this.${field.name} = ${field.name};
 	}
 	
