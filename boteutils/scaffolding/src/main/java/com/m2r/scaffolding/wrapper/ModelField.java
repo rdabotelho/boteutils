@@ -33,6 +33,7 @@ public class ModelField {
 	protected String columnWidth;
 	protected Integer precision;
 	protected Integer scale;
+	protected String itemLabel;
 
 	public ModelField(String name, Class<?> type) {
 		this.name = name;
@@ -42,7 +43,7 @@ public class ModelField {
 	public ModelField(String name, Class<?> type, String label, String columnName, boolean isFilter, boolean isViewed, boolean isText,
 			String enumName, String relatedModel,
 			Integer maxLength, boolean isDisabled, String decimalPlaces, String decimalSeparator, String symbol,
-			String pattern, boolean isRequired, boolean isViewedOnTable, String columnWidth, Integer precision, Integer scale) {
+			String pattern, boolean isRequired, boolean isViewedOnTable, String columnWidth, Integer precision, Integer scale, String itemLabel) {
 		this(name, type);
 		this.label = label;
 		this.columnName = columnName;
@@ -62,6 +63,7 @@ public class ModelField {
 		this.columnWidth = columnWidth;
 		this.precision = precision;
 		this.scale = scale;
+		this.itemLabel = itemLabel;
 	}
 
 	public String getName() {
@@ -158,6 +160,16 @@ public class ModelField {
 	public Integer getScale() {
 		return scale;
 	}
+	
+	public String getItemLabel() {
+		if (itemLabel == null || itemLabel.equals("")) {
+			itemLabel = "item";
+		}
+		else if (!itemLabel.startsWith("item.")) {
+			itemLabel = "item." + itemLabel;
+		}
+		return itemLabel;
+	}
 
 	public boolean isText() {
 		return isText;
@@ -170,8 +182,14 @@ public class ModelField {
 		return "set" + getName().substring(0, 1).toUpperCase() + getName().substring(1);
 	}
 	
-	public String getEnumItemsNamed() {
-		return "tipos" + getType().getSimpleName().replaceAll("Enum", "s");
+	public String getNamedItems() {
+		if (isEnumType()) {
+			String simpleName = getType().getSimpleName().replaceAll("Enum", "");
+			return simpleName.substring(0, 1).toLowerCase() + simpleName.substring(1) + "Items";
+		}
+		else {
+			return getType().getSimpleName().substring(0, 1).toLowerCase() + getType().getSimpleName().substring(1) + "Items";
+		}
 	}
 	
 	public boolean isStringType() {
@@ -191,7 +209,7 @@ public class ModelField {
 	}
 	
 	public boolean isEnumType() {
-		return getType().equals(ScaffoldEnum.class);
+		return getType().equals(ScaffoldEnum.class) || getType().isEnum();
 	}
 	
 	public boolean isModelType() {

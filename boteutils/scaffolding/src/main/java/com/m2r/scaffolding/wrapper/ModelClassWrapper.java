@@ -3,6 +3,8 @@ package com.m2r.scaffolding.wrapper;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import com.m2r.scaffolding.utils.ClassScaffold;
+import com.m2r.scaffolding.utils.MargeUtils;
 import com.m2r.scaffolding.utils.NameUtils;
 
 public class ModelClassWrapper extends ModelClass {
@@ -16,7 +18,12 @@ public class ModelClassWrapper extends ModelClass {
 	}
 	
 	private void init() {
-		for (Field field : getDeclaredFields()) {
+		ClassScaffold classScaffold = this.getRealModelClass().getAnnotation(ClassScaffold.class);
+		if (classScaffold != null) {
+			label = classScaffold.label();
+			icon = classScaffold.icon();
+		}
+		for (Field field : MargeUtils.getAllModelFields(this.modelClass)) {
 			viewedFields.add(new ModelFieldAdapter(field));
 		}
 	}

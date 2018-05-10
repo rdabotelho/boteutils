@@ -13,37 +13,40 @@
 		#set($label = "#{label.${field.name}}")
 		#set($value = "#{${modelClass.controllerInstanceName}.filter.${field.name}}")
 		#if($field.stringType)
-		
+
 #parse("./inputs/input-string.vm")
        	#elseif($field.textType)
-       	
+
 		</p:panelGrid>
 		<p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="ui-panelgrid-blank">
-       	
+
 #parse("./inputs/text-area.vm")
 
 		</p:panelGrid>
-		
+
 		<p:panelGrid columns="3" columnClasses="ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
        	#elseif($field.integerType)
-		
+
 #parse("./inputs/input-integer.vm")
        	#elseif($field.decimalType)
-		
+
 #parse("./inputs/input-decimal.vm")
        	#elseif($field.localDateType)
-		
+
 #parse("./inputs/input-date.vm")
        	#elseif($field.enumType)
-		
+
 #parse("./inputs/select-enum.vm")
+       	#elseif($field.modelType)
+
+#parse("./inputs/select-model.vm")
 		#end
 	#end
 #end
 
 		</p:panelGrid>
 	</ui:define>
-	
+
 	<ui:define name="edit">
 		<p:panelGrid columns="3" columnClasses="ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
 #foreach($field in $modelClass.viewedFields)
@@ -52,54 +55,57 @@
 		#set($label = "#{label.${field.name}}#if($field.required) *#end")
 		#set($value = "#{${modelClass.controllerInstanceName}.model.${field.name}}")
 		#if($field.stringType)
-		
+
 #parse("./inputs/input-string.vm")
        	#elseif($field.textType)
-       	
+
 		</p:panelGrid>
 		<p:panelGrid columns="1" columnClasses="ui-grid-col-12" layout="grid" styleClass="ui-panelgrid-blank">
-       	
+
 #parse("./inputs/text-area.vm")
 
 		</p:panelGrid>
-		
+
 		<p:panelGrid columns="3" columnClasses="ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
        	#elseif($field.integerType)
 		
 #parse("./inputs/input-integer.vm")
        	#elseif($field.decimalType)
-		
+
 #parse("./inputs/input-decimal.vm")
        	#elseif($field.localDateType)
-		
+
 #parse("./inputs/input-date.vm")
        	#elseif($field.enumType)
-		
+
 #parse("./inputs/select-enum.vm")
+       	#elseif($field.modelType)
+
+#parse("./inputs/select-model.vm")
 		#end
 	#end
 #end
 
 		</p:panelGrid>
 	</ui:define>
-	
+
 	<ui:define name="list">
 	  <p:dataTable id="dataTableList" var="item" value="#{${modelClass.controllerInstanceName}.list}" reflow="true" rows="10" paginator="true" selectionMode="single" selection="#{${modelClass.controllerInstanceName}.model}" rowKey="#{item.id}" lazy="true">
 	  	  <p:ajax event="rowSelect" listener="#{${modelClass.controllerInstanceName}.onRowSelect}" update="contentPanel"/>
 #foreach($field in $modelClass.viewedFields)
 	#if($field.viewedOnTable)
 		#if($field.stringType)
-		
+
 	      <p:column headerText="#{label.${field.name}}" style="text-align:left;" ${utils.attribute("width",$field.columnWidth)}>
 	          <h:outputText value="#{item.${field.name}}" />
 	      </p:column>
 	    #elseif($field.integerType)
-	    
+
 	      <p:column headerText="#{label.${field.name}}" style="text-align:center;" ${utils.attribute("width",$field.columnWidth)}>
 	          <h:outputText value="#{item.${field.name}}" />
 	      </p:column>
 	    #elseif($field.decimalType)
-	    
+
 	      <p:column headerText="#{label.${field.name}}" style="text-align:right;" ${utils.attribute("width",$field.columnWidth)}>
 	          <h:outputText value="#{item.${field.name}}">
 	          	#if($field.mask)
@@ -108,12 +114,12 @@
 	          </h:outputText>
 	      </p:column>
 	    #elseif($field.localDateType)
-	    
+
 	      <p:column headerText="#{label.${field.name}}" style="text-align:center;" ${utils.attribute("width",$field.columnWidth)}>
 	          <h:outputText value="#{item.${field.name}}" />
 	      </p:column>
 	    #elseif($field.enumType)
-	    
+
 	      <p:column headerText="#{label.${field.name}}" style="text-align:center;" ${utils.attribute("width",$field.columnWidth)}>
 	          <h:outputText value="#{msg[item.${field.name}.descricao]}" />
 	      </p:column>

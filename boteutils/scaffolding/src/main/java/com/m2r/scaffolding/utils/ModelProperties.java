@@ -51,8 +51,9 @@ public class ModelProperties {
 			String columnWidth = map.get(ModelPropertiesEnum.MODEL_PROPERTY_COLUMN_WIDTH.name() + "_" + id);
 			Integer percision = strToInteger(map.get(ModelPropertiesEnum.MODEL_PROPERTY_DECIMAL_PRECISION.name() + "_" + id));
 			Integer scale = strToInteger(map.get(ModelPropertiesEnum.MODEL_PROPERTY_DECIMAL_SCALE.name() + "_" + id));
+			String itemLabel = map.get(ModelPropertiesEnum.MODEL_PROPERTY_SELECT_ITEM_LABEL.name() + "_" + id);
 			
-			ModelField modelField = new ModelField(name, type, label, columnName, isFilter, isViewed, isText, enumName, relatedModel,maxLength, isDisabled, decimalPlaces, decimalSeparator, symbol, pattern, isRequired, isViewedOnTable, columnWidth, percision, scale);
+			ModelField modelField = new ModelField(name, type, label, columnName, isFilter, isViewed, isText, enumName, relatedModel,maxLength, isDisabled, decimalPlaces, decimalSeparator, symbol, pattern, isRequired, isViewedOnTable, columnWidth, percision, scale, itemLabel);
 			modelClass.addViewedField(modelField);
 			
 			id++;
@@ -219,6 +220,12 @@ public class ModelProperties {
 			@Override
 			public boolean isShow(Map<String, String> map) {
 				return isType(map.get(MODEL_PROPERTY_TYPE.name()), "12", "13", "14");
+			}						
+		},
+		MODEL_PROPERTY_SELECT_ITEM_LABEL("item", true){
+			@Override
+			public boolean isShow(Map<String, String> map) {
+				return isType(map.get(MODEL_PROPERTY_TYPE.name()), "13", "14");
 			}						
 		},
 		MODEL_PROPERTY_LENGTH("", false){

@@ -15,7 +15,7 @@ import $crudServiceName;
 public class $modelClass.controllerSimpleName extends CrudLazyController<$modelClass.simpleName,Long> {
 
 	private static final long serialVersionUID = 1L;
-	private static final String $iconName.toUpperCase() = "fa-file-o";
+	private static final String $iconName.toUpperCase() = "${modelClass.icon}";
 	
 	@Inject
 	$modelClass.serviceSimpleName $modelClass.serviceInstanceName;

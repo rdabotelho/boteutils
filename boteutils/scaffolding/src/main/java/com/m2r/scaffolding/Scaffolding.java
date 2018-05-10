@@ -109,7 +109,7 @@ public class Scaffolding {
 			if (file.exists()) {
 				file = new File(file.getPath()+".tmp");
 			}
-			this.margeAndSaveFromTemplate(file, "view.vm", "inputs/input-string.vm", "inputs/input-date.vm", "inputs/input-decimal.vm", "inputs/input-integer.vm", "inputs/text-area.vm", "inputs/select-enum.vm");
+			this.margeAndSaveFromTemplate(file, "view.vm", "inputs/input-string.vm", "inputs/input-date.vm", "inputs/input-decimal.vm", "inputs/input-integer.vm", "inputs/text-area.vm", "inputs/select-enum.vm", "inputs/select-model.vm");
 			mojo.getLog().info("Created view: " + file.getPath());
 		} 
 		catch (Exception e) {
@@ -129,6 +129,7 @@ public class Scaffolding {
 			for (Object key : properties.keySet()) {
 				map.put(key, properties.get(key));
 			}
+			map.put(getModelClassWrapper().getModelInstanceName(), getModelClassWrapper().getLabel());
 			for (Field field : getModelClassWrapper().getDeclaredFields()) {
 				if (!map.containsKey(field.getName()) && !field.getName().equals("id")) {
 					com.m2r.scaffolding.utils.FieldScaffold annotation = field.getAnnotation(com.m2r.scaffolding.utils.FieldScaffold.class);
@@ -141,7 +142,6 @@ public class Scaffolding {
 				}
 			}
 			String letter = "";
-			//FileWriter writer = new FileWriter(fileName);
 			OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fileName), StandardCharsets.ISO_8859_1);
 			for (Object key : map.keySet()) {
 				if (!key.toString().substring(0,1).toUpperCase().equals(letter)) {

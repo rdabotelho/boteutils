@@ -29,7 +29,7 @@ public class ModelFieldAdapter extends ModelField {
 		pattern = scaffoldingAnnotation != null && !scaffoldingAnnotation.pattern().equals("") ? scaffoldingAnnotation.pattern() : null;
 		isRequired = (scaffoldingAnnotation != null && scaffoldingAnnotation.isRequired()) || (isAnnotationPresent("nullable=false"));
 		isViewedOnTable = scaffoldingAnnotation != null && scaffoldingAnnotation.isViewedOnTable();
-		columnWidth = scaffoldingAnnotation != null && !scaffoldingAnnotation.columnWidth().equals("") ? scaffoldingAnnotation.columnWidth() : null;
+		columnWidth = scaffoldingAnnotation != null && !scaffoldingAnnotation.columnWidth().equals("") ? scaffoldingAnnotation.columnWidth() : null;		
 	}
 	
 	public boolean isAnnotationPresent(final String content) {
