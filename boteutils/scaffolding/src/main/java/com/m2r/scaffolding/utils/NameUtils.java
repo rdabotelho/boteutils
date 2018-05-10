@@ -1,4 +1,4 @@
-package com.m2r.scaffolding;
+package com.m2r.scaffolding.utils;
 
 public class NameUtils {
 
@@ -28,6 +28,10 @@ public class NameUtils {
 	
 	public static String modelPropertyToViewName(String value) {
 		return modelPropertyToKeyValue(value).replaceAll("\\.", "-").toLowerCase();
+	}
+	
+	public static String modelPropertyToClassName(String value) {
+		return value.substring(0, 1).toUpperCase() + value.substring(1);
 	}
 	
 	public static String modelNameToModelProperty(String value) {

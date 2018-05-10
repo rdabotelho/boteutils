@@ -1,0 +1,114 @@
+package $modelClass.modelPackage;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+import com.m2r.scaffolding.utils.ClassScaffold;
+import com.m2r.scaffolding.utils.FieldScaffold;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.validator.constraints.NotBlank;
+
+#foreach($imp in $modelClass.imports)
+import $imp;
+
+#end
+@Entity
+@Table(name = "$modelClass.tableName")
+@ClassScaffold(label="${modelClass.label}", icon="${modelClass.icon}")
+public class $modelClass.simpleName implements BaseModel<Long> {
+
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@SequenceGenerator(name = "SEQ_${modelClass.tableName}", sequenceName = "SEQ_${modelClass.tableName}", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_${modelClass.tableName}")
+	@Column(name = "ID_${modelClass.tableName}")
+	private Long id;
+
+#foreach($field in $modelClass.viewedFields)
+#if($field.required)
+#if($field.stringType)
+	@NotBlank
+#else
+	@NotNull
+#end
+#end
+	@Column(name = "${field.columnName}", nullable=$field.required$utils.attributeNumber(", length",${field.maxLength}))
+	@FieldScaffold(label="${field.label}", isfilter=${field.filter}, isViewed=${field.viewed}, isRequired=${field.required}${utils.attributeBool(", isDisabled",${field.disabled},false)}${utils.attributeBool(", isText",${field.text},false)}${utils.attributeBool(", isViewedOnTable",${field.viewedOnTable},false)}${utils.attributeNumber(", maxlength",${field.maxLength})}${utils.attribute(", decimalPlaces",${field.decimalPlaces})}${utils.attribute(", decimalSeparator",${field.decimalSeparator})}${utils.attribute(", symbol",${field.symbol})}${utils.attribute(", pattern",${field.pattern})}${utils.attribute(", columnWidth",${field.columnWidth})})
+	private ${field.type.simpleName} ${field.name};
+	
+#end
+	@Override
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+#foreach($field in $modelClass.viewedFields)
+	public ${field.type.simpleName} ${field.getMethodName}() {
+		return ${field.name};
+	}
+
+	public void ${field.setMethodName}(${field.type.simpleName} ${field.name}) {
+		this.${field.name} = ${field.name};
+	}
+	
+#end
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(17, 37).
+			       append(id).
+#foreach($field in $modelClass.viewedFields)
+#if($field.filter)
+			       append($field.name).
+#end
+#end
+			       toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		   if (obj == null) { return false; }
+		   if (obj == this) { return true; }
+		   if (obj.getClass() != getClass()) {
+		     return false;
+		   }
+		   $modelClass.simpleName other = ($modelClass.simpleName) obj;
+		   return new EqualsBuilder()
+		                 .append(id, other.id)
+#foreach($field in $modelClass.viewedFields)
+#if($field.filter)
+		                 .append($field.name, other.${field.name})
+#end
+#end
+		                 .isEquals();
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).
+			       append("id", id).
+#foreach($field in $modelClass.viewedFields)
+#if($field.filter)
+			       append("${field.name}", ${field.name}).
+#end
+#end
+			       toString();
+	}
+
+}

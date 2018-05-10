@@ -18,13 +18,18 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
+import com.m2r.scaffolding.utils.MargeUtils;
+import com.m2r.scaffolding.utils.ModelProperties;
+import com.m2r.scaffolding.wrapper.ModelClass;
+import com.m2r.scaffolding.wrapper.ModelClassWrapper;
+
 public class Scaffolding {
 
 	private ScaffoldingMojo mojo;
 	private String baseDir;
 	private String basePackage;
 	
-	private ModalClassWrapper modelClass;
+	private ModelClass modelClass;
 	
 	private MargeUtils margeUtils = new MargeUtils();
 	
@@ -34,17 +39,31 @@ public class Scaffolding {
 		this.basePackage = basePackage;
 	}
 	
+	public void configureEnviroment(ModelProperties modelProperties) throws MojoExecutionException {
+		modelClass = modelProperties.convertToModelBase(baseDir, basePackage);
+	}
+	
 	public void configureEnviroment(String model) throws MojoExecutionException {
-		modelClass = new ModalClassWrapper(loadModelClass(model), baseDir, basePackage);
+		modelClass = new ModelClassWrapper(loadModelClass(model), baseDir, basePackage);
 	}
 
 	public void generateModel() {
-		
+		try {
+			File file = new File(getModelClass().getModelPath());
+			if (file.exists()) {
+				file = new File(file.getPath()+".tmp");
+			}
+			this.margeAndSaveFromTemplate(file, "model.vm");
+			mojo.getLog().info("Created model: " + file.getPath());
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
 	}
 	
 	public void generateRepository() {
 		try {
-			File file = new File(getModelClass().getRepositoryPath());
+			File file = new File(getModelClassWrapper().getRepositoryPath());
 			if (file.exists()) {
 				file = new File(file.getPath()+".tmp");
 			}
@@ -58,7 +77,7 @@ public class Scaffolding {
 	
 	public void generateService() {
 		try {
-			File file = new File(getModelClass().getServicePath());
+			File file = new File(getModelClassWrapper().getServicePath());
 			if (file.exists()) {
 				file = new File(file.getPath()+".tmp");
 			}
@@ -72,7 +91,7 @@ public class Scaffolding {
 	
 	public void generateController() {
 		try {
-			File file = new File(getModelClass().getControllerPath());
+			File file = new File(getModelClassWrapper().getControllerPath());
 			if (file.exists()) {
 				file = new File(file.getPath()+".tmp");
 			}
@@ -86,7 +105,7 @@ public class Scaffolding {
 	
 	public void generateView() {
 		try {
-			File file = new File(getModelClass().getViewPath());
+			File file = new File(getModelClassWrapper().getViewPath());
 			if (file.exists()) {
 				file = new File(file.getPath()+".tmp");
 			}
@@ -100,7 +119,7 @@ public class Scaffolding {
 	
 	public void generateLabelProperties() {
 		try {
-			String fileName = getModelClass().getLabelPropertiesPath();
+			String fileName = getModelClassWrapper().getLabelPropertiesPath();
 			FileInputStream in = new FileInputStream(fileName);
 			Properties properties = new Properties();
 			properties.load(in);
@@ -110,9 +129,9 @@ public class Scaffolding {
 			for (Object key : properties.keySet()) {
 				map.put(key, properties.get(key));
 			}
-			for (Field field : modelClass.getDeclaredFields()) {
+			for (Field field : getModelClassWrapper().getDeclaredFields()) {
 				if (!map.containsKey(field.getName()) && !field.getName().equals("id")) {
-					com.m2r.scaffolding.utils.Scaffolding annotation = field.getAnnotation(com.m2r.scaffolding.utils.Scaffolding.class);
+					com.m2r.scaffolding.utils.FieldScaffold annotation = field.getAnnotation(com.m2r.scaffolding.utils.FieldScaffold.class);
 					if (annotation != null && !annotation.label().equals("")) {
 						map.put(field.getName(), annotation.label());
 					}
@@ -178,10 +197,14 @@ public class Scaffolding {
 		}
 	}
 	
-	public ModalClassWrapper getModelClass() {
+	public ModelClass getModelClass() {
 		return modelClass;
 	}
 
+	public ModelClassWrapper getModelClassWrapper() {
+		return (ModelClassWrapper) getModelClass();
+	}
+	
 	private void margeAndSaveFromTemplate(File file, String ... templatesNames) throws Exception {	
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
@@ -198,5 +221,5 @@ public class Scaffolding {
 		template.merge(context, writer);
 		writer.close();
 	}
-	
+		
 }

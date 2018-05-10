@@ -8,20 +8,20 @@ import java.lang.annotation.Target;
 
 @Retention(RUNTIME)
 @Target(FIELD)
-public @interface Scaffolding {
+public @interface FieldScaffold {
 
 	String label() default "";
 	boolean isfilter() default false;
 	boolean isViewed() default true;
-	boolean isText() default false;
-	int maxlength() default 0;
+	boolean isRequired() default false;
 	boolean isDisabled() default false;
+	boolean isText() default false;
+	boolean isViewedOnTable() default false;
+	int maxlength() default 0;
 	String decimalPlaces() default "";
 	String decimalSeparator() default "";
 	String symbol() default "";
 	String pattern() default "";
-	boolean isRequired() default false;
-	boolean isViewedOnTable() default false;
 	String columnWidth() default "";
 	
 }

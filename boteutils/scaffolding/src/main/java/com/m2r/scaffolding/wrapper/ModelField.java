@@ -1,0 +1,175 @@
+package com.m2r.scaffolding.wrapper;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Collections;
+
+import com.m2r.scaffolding.utils.ScaffoldModel;
+
+public class ModelField {
+	
+	protected String name;
+	protected Class<?> type;
+	protected String label;
+	protected String columnName;
+	protected boolean isFilter;
+	protected boolean isViewed;
+	protected boolean isText;
+	protected Integer maxLength;
+	protected boolean isDisabled;
+	protected String decimalPlaces;
+	protected String decimalSeparator;
+	protected String symbol;
+	protected String pattern;
+	protected boolean isRequired;
+	protected boolean isViewedOnTable;
+	protected String columnWidth;
+
+	public ModelField(String name, Class<?> type) {
+		this.name = name;
+		this.type = type;
+	}
+	
+	public ModelField(String name, Class<?> type, String label, String columnName, boolean isFilter, boolean isViewed, boolean isText,
+			Integer maxLength, boolean isDisabled, String decimalPlaces, String decimalSeparator, String symbol,
+			String pattern, boolean isRequired, boolean isViewedOnTable, String columnWidth) {
+		this(name, type);
+		this.label = label;
+		this.columnName = columnName;
+		this.isFilter = isFilter;
+		this.isViewed = isViewed;
+		this.isText = isText;
+		this.maxLength = maxLength;
+		this.isDisabled = isDisabled;
+		this.decimalPlaces = decimalPlaces;
+		this.decimalSeparator = decimalSeparator;
+		this.symbol = symbol;
+		this.pattern = pattern;
+		this.isRequired = isRequired;
+		this.isViewedOnTable = isViewedOnTable;
+		this.columnWidth = columnWidth;
+	}
+
+	public String getName() {
+		return name;
+	}
+	
+	public Class<?> getType() {
+		return type;
+	}
+	
+	public String getLabel() {
+		return label;
+	}
+	
+	public String getColumnName() {
+		return columnName;
+	}
+
+	public boolean isFilter() {
+		return isFilter;
+	}
+	
+	public boolean isViewed() {
+		return isViewed;
+	}
+	
+	public Integer getMaxLength() {
+		return maxLength;
+	}
+	
+	public boolean isDisabled() {
+		return isDisabled;
+	}
+
+	public String getDecimalPlaces() {
+		return decimalPlaces;
+	}
+
+	public String getDecimalSeparator() {
+		return decimalSeparator;
+	}
+
+	public String getSymbol() {
+		return symbol;
+	}
+
+	public String getPattern() {
+		return pattern;
+	}
+	
+	public boolean isMask() {
+		return pattern != null;
+	}
+
+	public boolean isRequired() {
+		return isRequired;
+	}
+	
+	public boolean isViewedOnTable() {
+		return isViewedOnTable;
+	}
+	
+	public String getColumnWidth() {
+		return columnWidth;
+	}
+
+	public boolean isText() {
+		return isText;
+	}
+	public String getGetMethodName() {
+		return "get" + getName().substring(0, 1).toUpperCase() + getName().substring(1);
+	}
+	
+	public String getSetMethodName() {
+		return "set" + getName().substring(0, 1).toUpperCase() + getName().substring(1);
+	}
+	
+	public String getEnumItemsNamed() {
+		return "tipos" + getType().getSimpleName().replaceAll("Enum", "s");
+	}
+	
+	public boolean isStringType() {
+		return getType().equals(String.class) && !isText();
+	}
+	
+	public boolean isTextType() {
+		return getType().equals(String.class) && isText();
+	}
+	
+	public boolean isIntegerType() {
+		return getType().equals(Byte.class) || getType().equals(Short.class) || getType().equals(Integer.class) || getType().equals(Long.class) || getType().equals(BigInteger.class);
+	}
+	
+	public boolean isDecimalType() {
+		return getType().equals(Float.class) || getType().equals(Double.class) || getType().equals(BigDecimal.class);
+	}
+	
+	public boolean isEnumType() {
+		return getType().isEnum();
+	}
+	
+	public boolean isCollectionType() {
+		return getType().isAssignableFrom(Collections.class);
+	}
+	
+	public boolean isModelType() {
+		return getType().isAssignableFrom(ScaffoldModel.class);
+	}
+	
+	public boolean isLocalDateType() {
+		return getType().equals(LocalDate.class);
+	}
+	
+	public boolean isLocalDateTimeType() {
+		return getType().equals(LocalDateTime.class);
+	}
+	
+	public boolean isLocalTimeType() {
+		return getType().equals(LocalTime.class);
+	}
+
+}

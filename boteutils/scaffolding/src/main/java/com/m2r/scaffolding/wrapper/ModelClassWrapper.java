@@ -1,27 +1,23 @@
-package com.m2r.scaffolding;
+package com.m2r.scaffolding.wrapper;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ModalClassWrapper {
+import com.m2r.scaffolding.utils.NameUtils;
 
-	private String baseDir;
-	private String basePackage;
+public class ModelClassWrapper extends ModelClass {
+
 	private Class<?> modelClass;
-	private List<FieldAdapter> viewedFields;
 
-	public ModalClassWrapper(Class<?> modelClass, String baseDir, String basePackage) {
+	public ModelClassWrapper(Class<?> modelClass, String baseDir, String basePackage) {
+		super(baseDir, basePackage, modelClass.getName(), "", modelClass.getSimpleName(), "", "");
 		this.modelClass = modelClass;
-		this.baseDir = baseDir;
-		this.basePackage = basePackage;
 		this.init();
 	}
 	
 	private void init() {
-		viewedFields = new ArrayList<FieldAdapter>();
 		for (Field field : getDeclaredFields()) {
-			viewedFields.add(new FieldAdapter(field));
+			viewedFields.add(new ModelFieldAdapter(field));
 		}
 	}
 	
@@ -29,24 +25,8 @@ public class ModalClassWrapper {
 		return modelClass;
 	}
 	
-	public String getBaseDir() {
-		return baseDir;
-	}
-	
 	public String getBasePackage() {
 		return basePackage;
-	}
-	
-	public String getSourceDir() {
-		return baseDir + "/src/main/java";
-	}
-	
-	public String getResourceDir() {
-		return baseDir + "/src/main/resources";
-	}
-	
-	public String getViewDir() {
-		return baseDir + "/src/main/webapp";
 	}
 	
 	public String getName() {
@@ -60,7 +40,7 @@ public class ModalClassWrapper {
 	/*
 	 * Model
 	 */
-	public List<FieldAdapter> getViewedFields() {
+	public List<ModelField> getViewedFields() {
 		return viewedFields;
 	}
 	
@@ -72,10 +52,6 @@ public class ModalClassWrapper {
 		return this.modelClass.getFields();
 	}
 
-	public String getModelInstanceName() {
-		return modelClass.getSimpleName().substring(0, 1).toLowerCase() + modelClass.getSimpleName().substring(1);
-	}
-	
 	/*
 	 * Repository
 	 */

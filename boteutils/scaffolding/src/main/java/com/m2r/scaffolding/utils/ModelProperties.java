@@ -1,19 +1,104 @@
-package com.m2r.scaffolding;
+package com.m2r.scaffolding.utils;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Enumeration;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+import com.m2r.scaffolding.wrapper.ModelClass;
+import com.m2r.scaffolding.wrapper.ModelField;
 
 public class ModelProperties {
 
 	private Map<String, String> map;
-	
+
 	public ModelProperties() {
 		map = new LinkedHashMap<>();
 	}
 	
-	public void promptProperties() {
+	public static void main(String[] args) {
+		ModelProperties m = new ModelProperties();
+		m.promptProperties();
+		ModelClass modelClass = m.convertToModelBase("/Users/botelho/kdi-BBTS/git_repository/elobato/elobato/elobato", "br.com.m2r.elobato");
+		System.out.println(m.map);
+		System.out.println(modelClass);
+	}
+	
+	public ModelClass convertToModelBase(String baseDir, String basePackage) {
+		String modelSimpleName = NameUtils.modelPropertyToClassName(map.get(ModelPropertiesEnum.MODEL_NAME.name()));
+		String modelName = basePackage + ".model." +  modelSimpleName;
+		String tableName = map.get(ModelPropertiesEnum.MODEL_TABLE.name());
+		String tableLabel = map.get(ModelPropertiesEnum.MODEL_LABEL.name());
+		String icon = map.get(ModelPropertiesEnum.MODEL_ICON.name()); 
+		ModelClass modelClass = new ModelClass(baseDir, basePackage, modelName, tableName, modelSimpleName, tableLabel, icon);
+		
+		int id = 0;
+		String name = map.get(ModelPropertiesEnum.MODEL_PROPERTY_NAME.name() + "_" + id);
+		while (name != null) {
+			Class<?> type = strToType(map.get(ModelPropertiesEnum.MODEL_PROPERTY_TYPE.name() + "_" + id));
+			String label = map.get(ModelPropertiesEnum.MODEL_PROPERTY_LABEL.name() + "_" + id);
+			String columnName = map.get(ModelPropertiesEnum.MODEL_PROPERTY_COLUMN_NAME.name() + "_" + id);
+			boolean isFilter = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_FILTER.name() + "_" + id));
+			boolean isViewed = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_VIEWED.name() + "_" + id));
+			boolean isText = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_TYPE.name() + "_" + id));
+			Integer maxLength = strToInteger(map.get(ModelPropertiesEnum.MODEL_PROPERTY_LENGTH.name() + "_" + id));
+			boolean isDisabled = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_DISABLED.name() + "_" + id));
+			String decimalPlaces = map.get(ModelPropertiesEnum.MODEL_PROPERTY_DECIMAL_PLACES.name() + "_" + id);
+			String decimalSeparator = map.get(ModelPropertiesEnum.MODEL_PROPERTY_DECIMAL_SEPARATOR.name() + "_" + id);
+			String symbol = map.get(ModelPropertiesEnum.MODEL_PROPERTY_DECIMAL_SYMBOL.name() + "_" + id);
+			String pattern = map.get(ModelPropertiesEnum.MODEL_PROPERTY_DECIMAL_PATTERN.name() + "_" + id);
+			boolean isRequired = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_REQUIRED.name() + "_" + id));
+			boolean isViewedOnTable = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_VIEWED_ON_TABLE.name() + "_" + id));
+			String columnWidth = map.get(ModelPropertiesEnum.MODEL_PROPERTY_COLUMN_WIDTH.name() + "_" + id);
+			
+			ModelField modelField = new ModelField(name, type, label, columnName, isFilter, isViewed, isText, maxLength, isDisabled, decimalPlaces, decimalSeparator, symbol, pattern, isRequired, isViewedOnTable, columnWidth);
+			modelClass.addViewedField(modelField);
+			
+			id++;
+			name = map.get(ModelPropertiesEnum.MODEL_PROPERTY_NAME.name() + "_" + id);
+		}
+		
+		return modelClass;
+	}
+	
+	private Class<?> strToType(String str) {
+		switch (str) {
+			case "0": return String.class;
+			case "1": return String.class;
+			case "2": return Integer.class;
+			case "3": return Long.class;
+			case "4": return BigInteger.class;
+			case "5": return Float.class;
+			case "6": return Double.class;
+			case "7": return BigDecimal.class;
+			case "8": return LocalDate.class;
+			case "9": return LocalTime.class;
+			case "10": return LocalDateTime.class;
+			case "11": return Enumeration.class;		
+		}
+		return null;
+	}
+	
+	private boolean strToBoolean(String str) {
+		return "1".equals(str);
+	}
+	
+	private Integer strToInteger(String str) {
+		return str != null && !str.equals("") ? Integer.parseInt(str) : null;
+	}
+	
+	public Map<String, String> getMap() {
+		return map;
+	}
+	
+	public boolean promptProperties() {
 		int id = 0;
 		int i = 0;
+		boolean uncomplete = true;
 		while (i < ModelPropertiesEnum.values().length) {
 			ModelPropertiesEnum prop = ModelPropertiesEnum.values()[i]; 
 			
@@ -35,6 +120,7 @@ public class ModelProperties {
 						for (int e=ModelPropertiesEnum.MODEL_PROPERTY_NAME.ordinal(); e<ModelPropertiesEnum.ENDED.ordinal(); e++) {
 							ModelPropertiesEnum prop2 = ModelPropertiesEnum.values()[e]; 
 							map.put(prop2.name() + "_" + id, map.get(prop2.name()));
+							map.put(prop2.name(), null);
 						}
 						id++;
 					}
@@ -56,14 +142,10 @@ public class ModelProperties {
 			
 			if (ModelPropertiesEnum.MODEL_ICON.equals(prop)) {
 				i = ModelPropertiesEnum.REPEAT_PROPERTY_BEGIN.ordinal();
+				uncomplete = false;
 			}
 		}
-	}
-	
-	public static void main(String[] args) {
-		ModelProperties m = new ModelProperties();
-		m.promptProperties();
-		System.out.println(m.map);
+		return !uncomplete;
 	}
 	
 	enum ModelPropertiesEnum {
@@ -92,25 +174,31 @@ public class ModelProperties {
 				return NameUtils.modelPropertyToLabelValue(NameUtils.modelNameToModelProperty(map.get(MODEL_PROPERTY_NAME.name())));
 			}
 		},
+		MODEL_PROPERTY_COLUMN_NAME("", true){
+			@Override
+			public String getDefaultValue(Map<String, String> map) {
+				return NameUtils.modelPropertyToEnum(NameUtils.modelNameToModelProperty(map.get(MODEL_PROPERTY_NAME.name())));
+			}
+		},
 		MODEL_PROPERTY_TYPE("0", true){
 			@Override
 			public String getPrompt(Map<String, String> map) {
 				StringBuilder str = new StringBuilder();
-				str.append("Which TYPE OF PROPERTY do you want to create?\n")
-					.append("0) String\n")
-					.append("1) String (Long Text)\n")
-					.append("2) Integer\n")
-					.append("3) Integer (Long)\n")
-					.append("4) Integer (BigInteger)\n")
-					.append("5) Decimal (Float)\n")
-					.append("6) Decimal (Double)\n")
-					.append("7) Decimal (BigDecimal)\n")
-					.append("8) Date (LocalDate)\n")
-					.append("9) Date (LocalTime)\n")
-					.append("10) Date (LocalDateTime)\n")
-					.append("11) Enumeration\n")
-					.append("12) ABORT\n")
-					.append("(0): ");
+				str.append(ConsoleReader.INFO).append("Which TYPE OF PROPERTY do you want to create?\n")
+					.append(ConsoleReader.INFO).append("0) String\n")
+					.append(ConsoleReader.INFO).append("1) String (Long Text)\n")
+					.append(ConsoleReader.INFO).append("2) Integer\n")
+					.append(ConsoleReader.INFO).append("3) Integer (Long)\n")
+					.append(ConsoleReader.INFO).append("4) Integer (BigInteger)\n")
+					.append(ConsoleReader.INFO).append("5) Decimal (Float)\n")
+					.append(ConsoleReader.INFO).append("6) Decimal (Double)\n")
+					.append(ConsoleReader.INFO).append("7) Decimal (BigDecimal)\n")
+					.append(ConsoleReader.INFO).append("8) Date (LocalDate)\n")
+					.append(ConsoleReader.INFO).append("9) Date (LocalTime)\n")
+					.append(ConsoleReader.INFO).append("10) Date (LocalDateTime)\n")
+					.append(ConsoleReader.INFO).append("11) Enumeration\n")
+					.append(ConsoleReader.INFO).append("12) ABORT\n")
+					.append(ConsoleReader.INFO).append("(0): ");
 				return str.toString();
 			}	
 			@Override
@@ -153,11 +241,11 @@ public class ModelProperties {
 			@Override
 			public String getPrompt(Map<String, String> map) {
 				StringBuilder str = new StringBuilder();
-				str.append("Is the property REQUIRED?\n")
-					.append("0) No\n")
-					.append("1) Yes\n")
-					.append("3) ABORT\n")
-					.append("(1): ");
+				str.append(ConsoleReader.INFO).append("Is the property REQUIRED?\n")
+					.append(ConsoleReader.INFO).append("0) No\n")
+					.append(ConsoleReader.INFO).append("1) Yes\n")
+					.append(ConsoleReader.INFO).append("3) ABORT\n")
+					.append(ConsoleReader.INFO).append("(1): ");
 				return str.toString();
 			}	
 			@Override
@@ -169,11 +257,11 @@ public class ModelProperties {
 			@Override
 			public String getPrompt(Map<String, String> map) {
 				StringBuilder str = new StringBuilder();
-				str.append("Is the property DISABLED?\n")
-					.append("0) No\n")
-					.append("1) Yes\n")
-					.append("3) ABORT\n")
-					.append("(0): ");
+				str.append(ConsoleReader.INFO).append("Is the property DISABLED?\n")
+					.append(ConsoleReader.INFO).append("0) No\n")
+					.append(ConsoleReader.INFO).append("1) Yes\n")
+					.append(ConsoleReader.INFO).append("3) ABORT\n")
+					.append(ConsoleReader.INFO).append("(0): ");
 				return str.toString();
 			}	
 			@Override
@@ -185,11 +273,11 @@ public class ModelProperties {
 			@Override
 			public String getPrompt(Map<String, String> map) {
 				StringBuilder str = new StringBuilder();
-				str.append("Is the property FILTER?\n")
-					.append("0) No\n")
-					.append("1) Yes\n")
-					.append("3) ABORT\n")
-					.append("(0): ");
+				str.append(ConsoleReader.INFO).append("Is the property FILTER?\n")
+					.append(ConsoleReader.INFO).append("0) No\n")
+					.append(ConsoleReader.INFO).append("1) Yes\n")
+					.append(ConsoleReader.INFO).append("3) ABORT\n")
+					.append(ConsoleReader.INFO).append("(0): ");
 				return str.toString();
 			}	
 			@Override
@@ -201,11 +289,11 @@ public class ModelProperties {
 			@Override
 			public String getPrompt(Map<String, String> map) {
 				StringBuilder str = new StringBuilder();
-				str.append("Is the property VIEWED?\n")
-					.append("0) No\n")
-					.append("1) Yes\n")
-					.append("3) ABORT\n")
-					.append("(1): ");
+				str.append(ConsoleReader.INFO).append("Is the property VIEWED?\n")
+					.append(ConsoleReader.INFO).append("0) No\n")
+					.append(ConsoleReader.INFO).append("1) Yes\n")
+					.append(ConsoleReader.INFO).append("3) ABORT\n")
+					.append(ConsoleReader.INFO).append("(1): ");
 				return str.toString();
 			}	
 			@Override
@@ -217,11 +305,11 @@ public class ModelProperties {
 			@Override
 			public String getPrompt(Map<String, String> map) {
 				StringBuilder str = new StringBuilder();
-				str.append("Is the property VIEWED ON TABLE?\n")
-					.append("0) No\n")
-					.append("1) Yes\n")
-					.append("3) ABORT\n")
-					.append("(1): ");
+				str.append(ConsoleReader.INFO).append("Is the property VIEWED ON TABLE?\n")
+					.append(ConsoleReader.INFO).append("0) No\n")
+					.append(ConsoleReader.INFO).append("1) Yes\n")
+					.append(ConsoleReader.INFO).append("3) ABORT\n")
+					.append(ConsoleReader.INFO).append("(1): ");
 				return str.toString();
 			}	
 			@Override
@@ -233,10 +321,10 @@ public class ModelProperties {
 			@Override
 			public String getPrompt(Map<String, String> map) {
 				StringBuilder str = new StringBuilder();
-				str.append("Do you want to create a new PROPERTY?\n")
-					.append("0) No\n")
-					.append("1) Yes\n")
-					.append("(1): ");
+				str.append(ConsoleReader.INFO).append("Do you want to create a new PROPERTY?\n")
+					.append(ConsoleReader.INFO).append("0) No\n")
+					.append(ConsoleReader.INFO).append("1) Yes\n")
+					.append(ConsoleReader.INFO).append("(1): ");
 				return str.toString();
 			}
 			@Override
@@ -269,7 +357,7 @@ public class ModelProperties {
 		
 		public String getPrompt(Map<String, String> map) {
 			String option = getDefaultValue(map);
-			return "What is the " + getPropertyName().toUpperCase() + "?\n" + (option != null && !option.equals("") ? "(" + option + "): " : "" );
+			return ConsoleReader.INFO + "What is the " + getPropertyName().toUpperCase() + "?\n" + (option != null && !option.equals("") ? "(" + option + "): " : "" );
 		}
 		
 		public ModelPropertiesEnum treatPromptAndGoTo(String optionResult, Map<String, String> map) {
