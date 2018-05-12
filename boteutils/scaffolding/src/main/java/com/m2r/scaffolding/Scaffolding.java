@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Map;
@@ -22,6 +21,7 @@ import com.m2r.scaffolding.utils.MargeUtils;
 import com.m2r.scaffolding.utils.ModelProperties;
 import com.m2r.scaffolding.wrapper.ModelClass;
 import com.m2r.scaffolding.wrapper.ModelClassWrapper;
+import com.m2r.scaffolding.wrapper.ModelField;
 
 public class Scaffolding {
 
@@ -130,11 +130,10 @@ public class Scaffolding {
 				map.put(key, properties.get(key));
 			}
 			map.put(getModelClassWrapper().getModelInstanceName(), getModelClassWrapper().getLabel());
-			for (Field field : getModelClassWrapper().getDeclaredFields()) {
+			for (ModelField field : getModelClassWrapper().getViewedFields()) {
 				if (!map.containsKey(field.getName()) && !field.getName().equals("id")) {
-					com.m2r.scaffolding.utils.FieldScaffold annotation = field.getAnnotation(com.m2r.scaffolding.utils.FieldScaffold.class);
-					if (annotation != null && !annotation.label().equals("")) {
-						map.put(field.getName(), annotation.label());
+					if (field.getLabel() != null && !field.getLabel().equals("")) {
+						map.put(field.getName(), field.getLabel());
 					}
 					else {
 						map.put(field.getName(), field.getName());						

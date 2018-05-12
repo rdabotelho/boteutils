@@ -10,6 +10,7 @@ import javax.persistence.Id;
 
 import com.m2r.scaffolding.utils.ClassScaffold;
 import com.m2r.scaffolding.utils.FieldScaffold;
+import com.m2r.scaffolding.utils.ScaffoldModel;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -22,7 +23,7 @@ import $imp;
 @Entity
 @Table(name = "$modelClass.tableName")
 @ClassScaffold(label="${modelClass.label}", icon="${modelClass.icon}")
-public class $modelClass.simpleName implements BaseModel<Long> {
+public class $modelClass.simpleName implements BaseModel<Long>, ScaffoldModel {
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,10 +49,8 @@ public class $modelClass.simpleName implements BaseModel<Long> {
 #end
 #if($field.modelType)
     @OneToOne
-	@Column(nullable=$field.nullable)
 #elseif($field.collectionType)
 	@OneToMany
-	@Column(nullable=$field.nullable)
 #else
 	@Column(name = "${field.columnName}", nullable=$field.nullable$utils.attributeNumber(", length",${field.maxLength})$utils.attributeNumber(", precision",${field.precision})$utils.attributeNumber(", scale",${field.scale}))
 #end
@@ -60,7 +59,12 @@ public class $modelClass.simpleName implements BaseModel<Long> {
 #end
 #end
 	@FieldScaffold(label="${field.label}", isfilter=${field.filter}, isViewed=${field.viewed}, isRequired=${field.required}${utils.attributeBool(", isDisabled",${field.disabled},false)}${utils.attributeBool(", isText",${field.text},false)}${utils.attributeBool(", isViewedOnTable",${field.viewedOnTable},false)}${utils.attributeNumber(", maxlength",${field.maxLength})}${utils.attribute(", decimalPlaces",${field.decimalPlaces})}${utils.attribute(", decimalSeparator",${field.decimalSeparator})}${utils.attribute(", symbol",${field.symbol})}${utils.attribute(", pattern",${field.pattern})}${utils.attribute(", columnWidth",${field.columnWidth})}${utils.attributeBool(", selectWithFilter",${field.selectWithFilter},false)})
+#if($field.propertyTransient)
+	private ${field.typeSimpleName} ${field.name} = new Periodo();
+#else
 	private ${field.typeSimpleName} ${field.name};
+#end
+	
 	
 #end	
 	@Override
@@ -87,7 +91,7 @@ public class $modelClass.simpleName implements BaseModel<Long> {
 		return new HashCodeBuilder(17, 37).
 			       append(id).
 #foreach($field in $modelClass.viewedFields)
-#if($field.filter)
+#if($field.filter and not $field.propertyTransient)
 			       append($field.name).
 #end
 #end
@@ -105,7 +109,7 @@ public class $modelClass.simpleName implements BaseModel<Long> {
 		   return new EqualsBuilder()
 		                 .append(id, other.id)
 #foreach($field in $modelClass.viewedFields)
-#if($field.filter)
+#if($field.filter and not $field.propertyTransient)
 		                 .append($field.name, other.${field.name})
 #end
 #end
@@ -117,7 +121,7 @@ public class $modelClass.simpleName implements BaseModel<Long> {
 		return new ToStringBuilder(this).
 			       append("id", id).
 #foreach($field in $modelClass.viewedFields)
-#if($field.filter)
+#if($field.filter and not $field.propertyTransient)
 			       append("${field.name}", ${field.name}).
 #end
 #end

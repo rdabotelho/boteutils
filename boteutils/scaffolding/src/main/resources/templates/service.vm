@@ -33,6 +33,11 @@ public class $modelClass.serviceSimpleName extends CrudService<$modelClass.simpl
 		List<Predicate> predicates = new ArrayList<>();
 #foreach($field in $modelClass.viewedFields)
 #if($field.filter)
+#if($field.period)
+		if (filter.${field.getMethodName}().isCompleto()) {
+			predicates.add(builder.between(root.get("${field.name}"), filter.${field.getMethodName}().getInicio(), filter.${field.getMethodName}().getFim()));
+		}
+#else
 		if (filter.${field.getMethodName}() != null) {
 #if($field.stringType)	
 			predicates.add(builder.like(builder.upper(root.get("${field.name}")), "%"+filter.${field.getMethodName}().toUpperCase()+"%"));
@@ -40,7 +45,8 @@ public class $modelClass.serviceSimpleName extends CrudService<$modelClass.simpl
 			predicates.add(builder.equal(root.get("${field.name}"), filter.${field.getMethodName}()));	
 #end
 		}
-#end		
+#end
+#end
 #end
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}

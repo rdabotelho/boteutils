@@ -6,7 +6,7 @@
 	template="/templates/template-crud.xhtml">
 
 	<ui:define name="search">
-		<p:panelGrid columns="3" columnClasses="ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
+		<p:panelGrid columns="${modelClass.seachColumnNumber}" columnClasses="ui-grid-col-${modelClass.seachColumnClassesNumber}" layout="grid" styleClass="ui-panelgrid-blank">
 #foreach($field in $modelClass.viewedFields)
 	#if($field.filter)
 		#set($id = "${field.name}Filter")
@@ -31,7 +31,7 @@
        	#elseif($field.decimalType)
 
 #parse("./inputs/input-decimal.vm")
-       	#elseif($field.localDateType)
+       	#elseif($field.localDateType || $field.period)
 
 #parse("./inputs/input-date.vm")
        	#elseif($field.enumType)
@@ -48,7 +48,7 @@
 	</ui:define>
 
 	<ui:define name="edit">
-		<p:panelGrid columns="3" columnClasses="ui-grid-col-4" layout="grid" styleClass="ui-panelgrid-blank">
+		<p:panelGrid columns="${modelClass.editColumnNumber}" columnClasses="ui-grid-col-${modelClass.editColumnClassesNumber}" layout="grid" styleClass="ui-panelgrid-blank">
 #foreach($field in $modelClass.viewedFields)
 	#if($field.viewed)
 		#set($id = "${field.name}")

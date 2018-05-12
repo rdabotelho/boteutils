@@ -10,6 +10,9 @@ import com.m2r.scaffolding.utils.NameUtils;
 public class ModelClassWrapper extends ModelClass {
 
 	private Class<?> modelClass;
+	
+	private int[] seachColumns = new int[] {0, 2};
+	private int[] editColumns = new int[] {0, 2};
 
 	public ModelClassWrapper(Class<?> modelClass, String baseDir, String basePackage) {
 		super(baseDir, basePackage, modelClass.getName(), "", modelClass.getSimpleName(), "", "");
@@ -24,7 +27,23 @@ public class ModelClassWrapper extends ModelClass {
 			icon = classScaffold.icon();
 		}
 		for (Field field : MargeUtils.getAllModelFields(this.modelClass)) {
-			viewedFields.add(new ModelFieldAdapter(field));
+			ModelFieldAdapter modelFieldAdapter = new ModelFieldAdapter(field);
+			if (modelFieldAdapter.isViewed()) {
+				editColumns[0] = editColumns[0] + 1;
+			}
+			if (modelFieldAdapter.isFilter()) {
+				seachColumns[0] = seachColumns[0] + 1;
+			}
+			viewedFields.add(modelFieldAdapter);
+		}
+		 
+		seachColumns[1] = seachColumns[0] < 3 ? 2 : (seachColumns[0] == 3 ? 4 : 3); 
+		editColumns[1] = editColumns[0] < 3 ? 2 : (editColumns[0] == 3 ? 4 : 3);
+		if (seachColumns[0] > 4) {
+			seachColumns[0] = 4;
+		}
+		if (editColumns[0] > 4) {
+			editColumns[0] = 4;
 		}
 	}
 	
@@ -43,6 +62,21 @@ public class ModelClassWrapper extends ModelClass {
 	public String getSimpleName() {
 		return this.modelClass.getSimpleName();
 	}
+	public Integer getSeachColumnNumber() {
+		return seachColumns[0];
+	}
+	
+	public Integer getSeachColumnClassesNumber() {
+		return seachColumns[1];
+	}
+	
+	public Integer getEditColumnNumber() {
+		return editColumns[0];
+	}
+	
+	public Integer getEditColumnClassesNumber() {
+		return editColumns[1];
+	}
 	
 	/*
 	 * Model
@@ -51,14 +85,6 @@ public class ModelClassWrapper extends ModelClass {
 		return viewedFields;
 	}
 	
-	public Field[] getDeclaredFields() {
-		return this.modelClass.getDeclaredFields();
-	}
-
-	public Field[] getFields() {
-		return this.modelClass.getFields();
-	}
-
 	/*
 	 * Repository
 	 */
