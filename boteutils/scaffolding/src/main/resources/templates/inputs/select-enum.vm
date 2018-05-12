@@ -2,6 +2,6 @@
 				<p:outputLabel for="${id}" value="${label}"/><br/>
 	        		<p:selectOneMenu id="${id}" value="${value}">
 	        			<f:selectItem itemLabel="" itemValue="#{null}" />
-	        			<f:selectItems value="#{$field.namedItems}" var="item" itemLabel="#{msg[item.descricao]}" itemValue="#{item}" />
+	        			<f:selectItems value="#{$field.namedItems}" var="item" itemLabel="#{msg[item.descricao]}" itemValue="#{item}"${utils.attributeBool(", filter",${field.selectWithFilter},false)}${utils.attribute(", filterMatchMode",${field.filterMatchMode})} />
 	        		</p:selectOneMenu>
        		</h:panelGroup>

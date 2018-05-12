@@ -33,6 +33,9 @@ public class $modelClass.simpleName implements BaseModel<Long> {
 	private Long id;
 
 #foreach($field in $modelClass.viewedFields)
+#if($field.propertyTransient)
+	@Transient
+#else
 #if($field.required)
 #if($field.textType)
 	@Lob
@@ -45,15 +48,18 @@ public class $modelClass.simpleName implements BaseModel<Long> {
 #end
 #if($field.modelType)
     @OneToOne
+	@Column(nullable=$field.nullable)
 #elseif($field.collectionType)
 	@OneToMany
+	@Column(nullable=$field.nullable)
 #else
-	@Column(name = "${field.columnName}", nullable=$field.required$utils.attributeNumber(", length",${field.maxLength})$utils.attributeNumber(", precision",${field.precision})$utils.attributeNumber(", scale",${field.scale}))
+	@Column(name = "${field.columnName}", nullable=$field.nullable$utils.attributeNumber(", length",${field.maxLength})$utils.attributeNumber(", precision",${field.precision})$utils.attributeNumber(", scale",${field.scale}))
 #end
 #if($field.enumType)
 	@Enumerated(EnumType.STRING)
 #end
-	@FieldScaffold(label="${field.label}", isfilter=${field.filter}, isViewed=${field.viewed}, isRequired=${field.required}${utils.attributeBool(", isDisabled",${field.disabled},false)}${utils.attributeBool(", isText",${field.text},false)}${utils.attributeBool(", isViewedOnTable",${field.viewedOnTable},false)}${utils.attributeNumber(", maxlength",${field.maxLength})}${utils.attribute(", decimalPlaces",${field.decimalPlaces})}${utils.attribute(", decimalSeparator",${field.decimalSeparator})}${utils.attribute(", symbol",${field.symbol})}${utils.attribute(", pattern",${field.pattern})}${utils.attribute(", columnWidth",${field.columnWidth})})
+#end
+	@FieldScaffold(label="${field.label}", isfilter=${field.filter}, isViewed=${field.viewed}, isRequired=${field.required}${utils.attributeBool(", isDisabled",${field.disabled},false)}${utils.attributeBool(", isText",${field.text},false)}${utils.attributeBool(", isViewedOnTable",${field.viewedOnTable},false)}${utils.attributeNumber(", maxlength",${field.maxLength})}${utils.attribute(", decimalPlaces",${field.decimalPlaces})}${utils.attribute(", decimalSeparator",${field.decimalSeparator})}${utils.attribute(", symbol",${field.symbol})}${utils.attribute(", pattern",${field.pattern})}${utils.attribute(", columnWidth",${field.columnWidth})}${utils.attributeBool(", selectWithFilter",${field.selectWithFilter},false)})
 	private ${field.typeSimpleName} ${field.name};
 	
 #end	

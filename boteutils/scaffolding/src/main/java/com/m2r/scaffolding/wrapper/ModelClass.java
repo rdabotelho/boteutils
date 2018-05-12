@@ -115,6 +115,9 @@ public class ModelClass {
 					imports.add("javax.validation.constraints.NotNull");					
 				}
 			}
+			if (field.isPropertyTransient()) {
+				imports.add("javax.persistence.Transient");					
+			}
 		}
 	}
 	

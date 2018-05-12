@@ -34,6 +34,8 @@ public class ModelField {
 	protected Integer precision;
 	protected Integer scale;
 	protected String itemLabel;
+	protected boolean selectWithFilter;
+	protected boolean propertyTransient;
 
 	public ModelField(String name, Class<?> type) {
 		this.name = name;
@@ -43,7 +45,8 @@ public class ModelField {
 	public ModelField(String name, Class<?> type, String label, String columnName, boolean isFilter, boolean isViewed, boolean isText,
 			String enumName, String relatedModel,
 			Integer maxLength, boolean isDisabled, String decimalPlaces, String decimalSeparator, String symbol,
-			String pattern, boolean isRequired, boolean isViewedOnTable, String columnWidth, Integer precision, Integer scale, String itemLabel) {
+			String pattern, boolean isRequired, boolean isViewedOnTable, String columnWidth, Integer precision, 
+			Integer scale, String itemLabel, boolean selectWithFilter, boolean propertyTransient) {
 		this(name, type);
 		this.label = label;
 		this.columnName = columnName;
@@ -64,6 +67,8 @@ public class ModelField {
 		this.precision = precision;
 		this.scale = scale;
 		this.itemLabel = itemLabel;
+		this.selectWithFilter = selectWithFilter;
+		this.propertyTransient = propertyTransient;
 	}
 
 	public String getName() {
@@ -145,6 +150,10 @@ public class ModelField {
 		return isRequired;
 	}
 	
+	public boolean isNullable() {
+		return !this.isRequired();
+	}
+	
 	public boolean isViewedOnTable() {
 		return isViewedOnTable;
 	}
@@ -169,6 +178,18 @@ public class ModelField {
 			itemLabel = "item." + itemLabel;
 		}
 		return itemLabel;
+	}
+	
+	public boolean isSelectWithFilter() {
+		return selectWithFilter;
+	}
+	
+	public boolean isPropertyTransient() {
+		return propertyTransient;
+	}
+	
+	public String getFilterMatchMode() {
+		return isSelectWithFilter() ? "startsWith" : null;
 	}
 
 	public boolean isText() {
@@ -230,6 +251,10 @@ public class ModelField {
 	
 	public boolean isLocalTimeType() {
 		return getType().equals(LocalTime.class);
+	}
+	
+	public boolean isPeriod() {
+		return getType().getSimpleName().equals("Periodo");
 	}
 
 }

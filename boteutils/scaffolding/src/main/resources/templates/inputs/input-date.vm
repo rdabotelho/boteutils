@@ -1,4 +1,16 @@
+#if($field.period)
+			<h:panelGroup>
+				<p:outputLabel for="${id}Start" value="#{label.periodoInicio}"/><br/>
+        		<p:calendar id="${id}Start" value="#{${modelClass.controllerInstanceName}.filter.${field.name}.inicio}" showOn="button" $utils.attribute("mask",$field.mask) $utils.attribute("pattern",$field.pattern) />
+       		</h:panelGroup>
+			
+			<h:panelGroup>
+				<p:outputLabel for="${id}End" value="#{label.periodoFim}"/><br/>
+        		<p:calendar id="${id}End" value="#{${modelClass.controllerInstanceName}.filter.${field.name}.fim}" showOn="button" $utils.attribute("mask",$field.mask) $utils.attribute("pattern",$field.pattern) />
+       		</h:panelGroup>
+#else
 			<h:panelGroup>
 				<p:outputLabel for="${id}" value="${label}"/><br/>
         			<p:calendar id="${id}" value="${value}" showOn="button" $utils.attribute("mask",$field.mask) $utils.attribute("pattern",$field.pattern) />
        		</h:panelGroup>
+#end

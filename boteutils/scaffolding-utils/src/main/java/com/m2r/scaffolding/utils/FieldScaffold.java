@@ -17,11 +17,13 @@ public @interface FieldScaffold {
 	boolean isDisabled() default false;
 	boolean isText() default false;
 	boolean isViewedOnTable() default false;
+	boolean selectWithFilter() default false;
 	int maxlength() default 0;
 	String decimalPlaces() default "";
 	String decimalSeparator() default "";
 	String symbol() default "";
 	String pattern() default "";
 	String columnWidth() default "";
+	boolean isPropertyTransient() default false;
 	
 }

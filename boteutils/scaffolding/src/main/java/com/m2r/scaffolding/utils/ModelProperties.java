@@ -37,7 +37,7 @@ public class ModelProperties {
 			String columnName = map.get(ModelPropertiesEnum.MODEL_PROPERTY_COLUMN_NAME.name() + "_" + id);
 			boolean isFilter = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_FILTER.name() + "_" + id));
 			boolean isViewed = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_VIEWED.name() + "_" + id));
-			boolean isText = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_TYPE.name() + "_" + id));
+			boolean isText = isStringText(map.get(ModelPropertiesEnum.MODEL_PROPERTY_TYPE.name() + "_" + id));
 			String enumName = map.get(ModelPropertiesEnum.MODEL_PROPERTY_ENUM_NAME.name() + "_" + id);
 			String relatedModel = map.get(ModelPropertiesEnum.MODEL_PROPERTY_RELATED_MODEL.name() + "_" + id);
 			Integer maxLength = strToInteger(map.get(ModelPropertiesEnum.MODEL_PROPERTY_LENGTH.name() + "_" + id));
@@ -52,8 +52,10 @@ public class ModelProperties {
 			Integer percision = strToInteger(map.get(ModelPropertiesEnum.MODEL_PROPERTY_DECIMAL_PRECISION.name() + "_" + id));
 			Integer scale = strToInteger(map.get(ModelPropertiesEnum.MODEL_PROPERTY_DECIMAL_SCALE.name() + "_" + id));
 			String itemLabel = map.get(ModelPropertiesEnum.MODEL_PROPERTY_SELECT_ITEM_LABEL.name() + "_" + id);
+			boolean selectWithFilter = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_SELECT_WITH_FILTER.name() + "_" + id));			
+			boolean propertyTransient = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_PROPERTY_TRANSIENT.name() + "_" + id));			
 			
-			ModelField modelField = new ModelField(name, type, label, columnName, isFilter, isViewed, isText, enumName, relatedModel,maxLength, isDisabled, decimalPlaces, decimalSeparator, symbol, pattern, isRequired, isViewedOnTable, columnWidth, percision, scale, itemLabel);
+			ModelField modelField = new ModelField(name, type, label, columnName, isFilter, isViewed, isText, enumName, relatedModel,maxLength, isDisabled, decimalPlaces, decimalSeparator, symbol, pattern, isRequired, isViewedOnTable, columnWidth, percision, scale, itemLabel, selectWithFilter, propertyTransient);
 			modelClass.addViewedField(modelField);
 			
 			id++;
@@ -82,6 +84,10 @@ public class ModelProperties {
 			case "14": return List.class;
 		}
 		return null;
+	}
+	
+	private boolean isStringText(String str) {
+		return "1".equals(str);
 	}
 	
 	private boolean strToBoolean(String str) {
@@ -228,11 +234,39 @@ public class ModelProperties {
 				return isType(map.get(MODEL_PROPERTY_TYPE.name()), "13", "14");
 			}						
 		},
+		MODEL_PROPERTY_SELECT_WITH_FILTER("0", true){
+			@Override
+			public String getPrompt(Map<String, String> map) {
+				StringBuilder str = new StringBuilder();
+				str.append(ConsoleReader.INFO).append("Is the SELECT WITH FILTER?\n")
+					.append(ConsoleReader.INFO).append("0) No\n")
+					.append(ConsoleReader.INFO).append("1) Yes\n")
+					.append(ConsoleReader.INFO).append("3) ABORT\n")
+					.append(ConsoleReader.INFO).append("(0): ");
+				return str.toString();
+			}	
+			@Override
+			public boolean isShow(Map<String, String> map) {
+				return isType(map.get(MODEL_PROPERTY_TYPE.name()), "11", "12", "13", "14");
+			}						
+		},
 		MODEL_PROPERTY_LENGTH("", false){
 			@Override
 			public boolean isShow(Map<String, String> map) {
 				return isType(map.get(MODEL_PROPERTY_TYPE.name()), "0", "1");
 			}
+		},
+		MODEL_PROPERTY_PROPERTY_TRANSIENT("0", true){
+			@Override
+			public String getPrompt(Map<String, String> map) {
+				StringBuilder str = new StringBuilder();
+				str.append(ConsoleReader.INFO).append("Is the FIELD TRANSIENT?\n")
+					.append(ConsoleReader.INFO).append("0) No\n")
+					.append(ConsoleReader.INFO).append("1) Yes\n")
+					.append(ConsoleReader.INFO).append("3) ABORT\n")
+					.append(ConsoleReader.INFO).append("(0): ");
+				return str.toString();
+			}	
 		},
 		MODEL_PROPERTY_DECIMAL_PRECISION("19", false){
 			@Override
