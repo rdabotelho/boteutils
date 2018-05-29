@@ -1,5 +1,6 @@
 package com.m2r.scaffolding.utils;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
@@ -9,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.maven.plugin.MojoExecutionException;
 
 import com.m2r.scaffolding.wrapper.ModelClass;
 import com.m2r.scaffolding.wrapper.ModelField;
@@ -102,7 +105,7 @@ public class ModelProperties {
 		return map;
 	}
 	
-	public boolean promptProperties() {
+	public boolean promptProperties(String scriptDir) throws MojoExecutionException {
 		int id = 0;
 		int i = 0;
 		boolean uncomplete = true;
@@ -120,6 +123,16 @@ public class ModelProperties {
 			if (prop.isShow(map)) {
 				String option = prop.getPrompt(map);
 				String optionResult = ConsoleReader.readFromConsole(option);
+				
+				if (ModelPropertiesEnum.MODEL_NAME.equals(prop) && scriptDir != null && !scriptDir.equals("")) {
+					File file = new File(scriptDir, optionResult.toLowerCase() + ".txt");
+					if (file.exists()) {
+						ScriptLoader.load(file, map);
+						uncomplete = false;
+						break;
+					}
+				}
+				
 				try {
 					ModelPropertiesEnum nextProp = prop.treatPromptAndGoTo(optionResult, map);
 					
@@ -152,6 +165,7 @@ public class ModelProperties {
 				uncomplete = false;
 			}
 		}
+				
 		return !uncomplete;
 	}
 	

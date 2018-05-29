@@ -21,6 +21,9 @@ public class ScaffoldingMojo extends AbstractMojo {
 	@Parameter(property = "model")
 	private String model;
 	
+	@Parameter(property = "scriptDir")
+	private String scriptDir;
+	
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		if (baseDir == null) {
@@ -64,7 +67,7 @@ public class ScaffoldingMojo extends AbstractMojo {
 			break;
 		case "1": 
 			ModelProperties modelProperties = new ModelProperties();
-			if (modelProperties.promptProperties()) {
+			if (modelProperties.promptProperties(scriptDir)) {
 				scaffolding.configureEnviroment(modelProperties);
 				generateModel(scaffolding);
 			}

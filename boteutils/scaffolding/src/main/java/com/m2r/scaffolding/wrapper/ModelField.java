@@ -234,7 +234,7 @@ public class ModelField {
 	}
 	
 	public boolean isModelType() {
-		return getType().equals(ScaffoldModel.class);
+		return getType().equals(ScaffoldModel.class) || getType().isAssignableFrom(ScaffoldModel.class);
 	}
 	
 	public boolean isCollectionType() {

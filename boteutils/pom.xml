@@ -22,6 +22,7 @@
 		<module>ksutils</module>
 		<module>scaffolding</module>
 		<module>scaffolding-utils</module>
+		<module>scaffolding-test</module>
 	</modules>
 
 	<dependencyManagement>
