@@ -107,6 +107,13 @@ public class ParserScript {
 			if (tokenType.getValue().endsWith("Enum") ) {
 				properties.put("MODEL_PROPERTY_TYPE_" + newId, "11");
 				properties.put("MODEL_PROPERTY_ENUM_NAME_" + newId, tokenType.getValue());
+				if (hasParams) {
+					StringBuilder str = new StringBuilder();
+					for (int i=5; i<(getTokens().size()-1); i++) {
+						str.append(getTokens().get(i).getValue());
+					}
+					properties.put("MODEL_PROPERTY_ENUM_VALUES_" + newId, str.toString());
+				}
 			}
 			else if (tokenType.getValue().startsWith("Set")) {
 				properties.put("MODEL_PROPERTY_TYPE_" + newId, "13");

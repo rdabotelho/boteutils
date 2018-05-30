@@ -54,11 +54,23 @@ public class Scaffolding {
 				file = new File(file.getPath()+".tmp");
 			}
 			this.margeAndSaveFromTemplate(file, "model.vm");
+			this.generateEnums();
 			mojo.getLog().info("Created model: " + file.getPath());
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
 		}		
+	}
+	
+	private void generateEnums() throws Exception {
+		for (ModelField modelField : getModelClass().getViewedFields()) {
+			if (modelField.isEnumType()) {
+				File file = new File(modelField.getEnumPath());
+				if (!file.exists()) {
+					this.margeAndSaveFromTemplate(file, modelField, "enum.vm");				
+				}
+			}
+		}
 	}
 	
 	public void generateRepository() {
@@ -205,6 +217,10 @@ public class Scaffolding {
 	}
 	
 	private void margeAndSaveFromTemplate(File file, String ... templatesNames) throws Exception {	
+		margeAndSaveFromTemplate(file, null, templatesNames);
+	}
+	
+	private void margeAndSaveFromTemplate(File file, ModelField modelField, String ... templatesNames) throws Exception {	
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}
@@ -215,6 +231,9 @@ public class Scaffolding {
 		Template template = velocityEngine.getTemplate(templatesNames[0]);
 		VelocityContext context = new VelocityContext();
 		context.put("modelClass", getModelClass());
+		if (modelField != null) {
+			context.put("modelField", modelField);			
+		}
 		context.put("utils", margeUtils);
 		FileWriter writer = new FileWriter(file);
 		template.merge(context, writer);

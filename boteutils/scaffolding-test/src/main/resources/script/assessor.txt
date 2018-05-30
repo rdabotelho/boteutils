@@ -1,0 +1,23 @@
+Assessor
+- nome: String<60>
+- cpf: String<11>
+- rg: String<10>
+- tituloEleitor: String<20>
+- ctps: String<20>
+- nascimento: LocalDate
+- naturalidade: String
+- nacionalidade: String
+- estadoCivil: EstadoCivilEnum
+- telefoneFixo: String<15>
+- telefoneMovel: String<15>
+- referencia: String<30>
+- cep: String<8>
+- endereco: String<60>
+- numero: String<6>
+- complemento: String<60>
+- cidade: String<60>
+- estado: String<2>
+- inicioContrato: LocalDate
+- fimContrato: LocalDate
+- rendimentoBruto: BigDecimal
+- carteira: Carteira

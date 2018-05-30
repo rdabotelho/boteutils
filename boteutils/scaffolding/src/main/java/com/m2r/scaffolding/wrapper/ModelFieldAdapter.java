@@ -9,8 +9,8 @@ public class ModelFieldAdapter extends ModelField {
 
 	private Field field;
 
-	public ModelFieldAdapter(Field field) {
-		super(field.getName(), field.getType());
+	public ModelFieldAdapter(ModelClass modelClass, Field field) {
+		super(modelClass, field.getName(), field.getType());
 		this.field = field;
 		this.init();
 	}

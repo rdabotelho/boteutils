@@ -58,7 +58,9 @@ public class ModelProperties {
 			boolean selectWithFilter = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_SELECT_WITH_FILTER.name() + "_" + id));			
 			boolean propertyTransient = strToBoolean(map.get(ModelPropertiesEnum.MODEL_PROPERTY_PROPERTY_TRANSIENT.name() + "_" + id));			
 			
-			ModelField modelField = new ModelField(name, type, label, columnName, isFilter, isViewed, isText, enumName, relatedModel,maxLength, isDisabled, decimalPlaces, decimalSeparator, symbol, pattern, isRequired, isViewedOnTable, columnWidth, percision, scale, itemLabel, selectWithFilter, propertyTransient);
+			ModelField modelField = new ModelField(modelClass, name, type, label, columnName, isFilter, isViewed, isText, enumName, relatedModel,maxLength, isDisabled, decimalPlaces, decimalSeparator, symbol, pattern, isRequired, isViewedOnTable, columnWidth, percision, scale, itemLabel, selectWithFilter, propertyTransient);
+			String enumValues = map.get("MODEL_PROPERTY_ENUM_VALUES_" + id);
+			modelField.setEnumValues(enumValues);
 			modelClass.addViewedField(modelField);
 			
 			id++;

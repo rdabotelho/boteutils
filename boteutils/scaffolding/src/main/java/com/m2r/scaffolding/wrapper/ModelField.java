@@ -7,6 +7,8 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.m2r.scaffolding.utils.ScaffoldEnum;
 import com.m2r.scaffolding.utils.ScaffoldModel;
@@ -36,18 +38,21 @@ public class ModelField {
 	protected String itemLabel;
 	protected boolean selectWithFilter;
 	protected boolean propertyTransient;
+	protected String enumValues;
+	protected ModelClass modelClass;
 
-	public ModelField(String name, Class<?> type) {
+	public ModelField(ModelClass modelClass, String name, Class<?> type) {
+		this.modelClass = modelClass;
 		this.name = name;
 		this.type = type;
 	}
 	
-	public ModelField(String name, Class<?> type, String label, String columnName, boolean isFilter, boolean isViewed, boolean isText,
+	public ModelField(ModelClass modelClass, String name, Class<?> type, String label, String columnName, boolean isFilter, boolean isViewed, boolean isText,
 			String enumName, String relatedModel,
 			Integer maxLength, boolean isDisabled, String decimalPlaces, String decimalSeparator, String symbol,
 			String pattern, boolean isRequired, boolean isViewedOnTable, String columnWidth, Integer precision, 
 			Integer scale, String itemLabel, boolean selectWithFilter, boolean propertyTransient) {
-		this(name, type);
+		this(modelClass, name, type);
 		this.label = label;
 		this.columnName = columnName;
 		this.isFilter = isFilter;
@@ -180,6 +185,14 @@ public class ModelField {
 		return itemLabel;
 	}
 	
+	public String getEnumValues() {
+		return enumValues;
+	}
+
+	public void setEnumValues(String enumValues) {
+		this.enumValues = enumValues;
+	}
+
 	public boolean isSelectWithFilter() {
 		return selectWithFilter;
 	}
@@ -255,6 +268,22 @@ public class ModelField {
 	
 	public boolean isPeriod() {
 		return getType().getSimpleName().equals("Periodo");
+	}
+	
+	/*
+	 * 	Enum
+	 */
+	public String getEnumPath() {
+		return modelClass.getSourceDir() + "/" + getEnumPackage().replaceAll("\\.", "/") + "/" + getEnumName() + ".java";
+	}
+	
+	public String getEnumPackage() {
+		return modelClass.getBasePackage() + ".enums";
+	}
+	
+	public List<String> getListEnumValues() {
+		String values = enumValues != null ? enumValues: "";
+		return Stream.of(values.split(",")).collect(Collectors.toList());
 	}
 
 }

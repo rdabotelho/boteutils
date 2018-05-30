@@ -1,0 +1,26 @@
+package $modelField.enumPackage;
+
+public enum $modelField.enumName implements IGenericEnum {
+
+#foreach($enumValue in $modelField.listEnumValues)
+	${enumValue}(""),
+#end	
+	;
+	
+    private final String description;
+	
+	${modelField.enumName}(String description) {
+	     this.description = description;
+	}
+
+	@Override
+	public String getValue() {
+		return name();
+	}
+
+    @Override
+    public String getDescription() {
+        return description;
+    }
+
+}

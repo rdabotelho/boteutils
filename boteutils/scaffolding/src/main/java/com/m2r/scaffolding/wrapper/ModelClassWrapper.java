@@ -27,7 +27,7 @@ public class ModelClassWrapper extends ModelClass {
 			icon = classScaffold.icon();
 		}
 		for (Field field : MargeUtils.getAllModelFields(this.modelClass)) {
-			ModelFieldAdapter modelFieldAdapter = new ModelFieldAdapter(field);
+			ModelFieldAdapter modelFieldAdapter = new ModelFieldAdapter(this, field);
 			if (modelFieldAdapter.isViewed()) {
 				editColumns[0] = editColumns[0] + 1;
 			}
