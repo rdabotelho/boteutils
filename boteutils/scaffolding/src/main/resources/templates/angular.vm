@@ -1,0 +1,57 @@
+import {Entity, PrimaryGeneratedColumn, Column} from "typeorm";
+import { EntidadeBase } from "./entidade-base";
+
+@Entity('${modelClass.modelInstanceName}')
+export class $modelClass.simpleName extends EntidadeBase{
+    
+#foreach($field in $modelClass.viewedFields)
+#if(not $field.propertyTransient)
+#if($field.name == "id")
+    @PrimaryGeneratedColumn({name:"id_$modelClass.tableName.toLowerCase()"})
+    ${field.name}: number;
+#elseif($field.textType)
+    @Column({length:${field.maxLength}, name:"$field.columnName.toLowerCase()"})
+    ${field.name}: string;
+#elseif($field.stringType)
+    @Column({length:${field.maxLength}, name:"$field.columnName.toLowerCase()"})
+    ${field.name}: string;
+#elseif($field.integerType)
+    @Column({name:"$field.columnName.toLowerCase()"})
+    ${field.name}: number;
+#elseif($field.decimalType)
+    @Column({name:"$field.columnName.toLowerCase()"})
+    ${field.name}: number;
+#elseif($field.dateTime)
+    @Column({name:"$field.columnName.toLowerCase()"})
+    ms${field.nameToInstanceName}: number;
+#elseif($field.enumType)
+    @Column({name:"$field.columnName.toLowerCase()"})
+    ${field.name}: number;    
+#elseif($field.modelType)
+    @OneToOne(type => ${field.typeSimpleName}, {
+        cascade: true
+    })
+    @JoinColumn()
+    ${field.name}: ${field.typeSimpleName};
+#elseif($field.collectionType)
+    @OneToMany(type => ${field.relatedModel})
+    ${field.name}: ${field.relatedModel}[];
+#end
+
+#end
+#end
+#foreach($field in $modelClass.viewedFields)
+#if(not $field.propertyTransient)
+#if($field.dateTime)
+    ${field.getMethodName}():Date{
+        return this.millisecondsToDate(this.ms${field.nameToInstanceName});
+    }
+
+    ${field.setMethodName}(${field.name}:Date){
+        this.ms${field.nameToInstanceName} = this.dateToMilliseconds(${field.name});
+    }
+    
+#end    
+#end
+#end
+}

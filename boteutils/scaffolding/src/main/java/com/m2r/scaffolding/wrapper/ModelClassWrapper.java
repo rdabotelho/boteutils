@@ -1,7 +1,11 @@
 package com.m2r.scaffolding.wrapper;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
+
+import javax.persistence.Table;
 
 import com.m2r.scaffolding.utils.ClassScaffold;
 import com.m2r.scaffolding.utils.MargeUtils;
@@ -34,6 +38,15 @@ public class ModelClassWrapper extends ModelClass {
 			if (modelFieldAdapter.isFilter()) {
 				seachColumns[0] = seachColumns[0] + 1;
 			}
+			if (modelFieldAdapter.isModelType()) {
+				modelFieldAdapter.setRelatedModel(modelFieldAdapter.getField().getType().getSimpleName());
+			}
+			else if (modelFieldAdapter.isCollectionType()) {
+				ParameterizedType pt = (ParameterizedType) modelFieldAdapter.getField().getGenericType();
+				Type item = pt.getActualTypeArguments()[0];
+				Class<?> t = (Class<?>) item;
+				modelFieldAdapter.setRelatedModel(t.getSimpleName());
+			}
 			viewedFields.add(modelFieldAdapter);
 		}
 		 
@@ -44,6 +57,11 @@ public class ModelClassWrapper extends ModelClass {
 		}
 		if (editColumns[0] > 4) {
 			editColumns[0] = 4;
+		}
+		
+		Table table = this.getRealModelClass().getAnnotation(Table.class);
+		if (table != null) {
+			tableName = table.name();
 		}
 	}
 	
@@ -186,6 +204,20 @@ public class ModelClassWrapper extends ModelClass {
 	
 	public String getLabelPropertiesInstanceName() {
 		return getLabelPropertiesSimpleName().substring(0, 1).toLowerCase() + getLabelPropertiesSimpleName().substring(1);
+	}
+	
+	/*
+	 * DDL
+	 */
+	public String getDDLPath() {
+		return getResourceDir() + "/ddl/" + getSimpleName().substring(0, 1).toLowerCase() + getSimpleName().substring(1) + ".txt";
+	}
+	
+	/*
+	 * Angular Model
+	 */
+	public String getAngularModelPath() {
+		return getResourceDir() + "/angular-model/" + getSimpleName().substring(0, 1).toLowerCase() + getSimpleName().substring(1) + ".ts";
 	}
 			
 }

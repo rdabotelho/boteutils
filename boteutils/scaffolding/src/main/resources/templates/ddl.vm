@@ -1,0 +1,22 @@
+CREATE TABLE "SCHEMA"."${modelClass.tableName}" (
+#foreach($field in $modelClass.viewedFields)
+#if(not $field.propertyTransient)
+#if($field.textType)
+	"${field.columnName}" CLOB #if($field.required) NOT NULL ENABLE #end,
+#elseif($field.stringType)
+	"${field.columnName}" VARCHAR2(${field.maxLength} CHAR) #if($field.required) NOT NULL ENABLE #end,
+#elseif($field.integerType)
+	"${field.columnName}" NUMBER #if($field.required) NOT NULL ENABLE #end,
+#elseif($field.decimalType)
+	"${field.columnName}" NUMBER(${field.precision},${field.scale}) #if($field.required) NOT NULL ENABLE #end,
+#elseif($field.dateTime)
+	"${field.columnName}" DATE #if($field.required) NOT NULL ENABLE #end,
+#elseif($field.enumType)
+	"${field.columnName}" VARCHAR2(${field.maxLength} CHAR) #if($field.required) NOT NULL ENABLE #end,
+#end
+#end
+#end
+	CONSTRAINT "${modelClass.tableName}_PK" PRIMARY KEY ("ID_${modelClass.tableName}")
+);
+CREATE SEQUENCE SEQ_${modelClass.tableName} MINVALUE 1 MAXVALUE 9999999999 START WITH 1 INCREMENT BY 1 NOCACHE CYCLE;
+--- ALTER TABLE "SCHEMA"."${modelClass.tableName}" ADD CONSTRAINT ${modelClass.tableName}_COLUNA_FK FOREIGN KEY (COLUNA) REFERENCES TABELA_ESTRANGEIRA(COLUNA);

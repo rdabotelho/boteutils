@@ -1,4 +1,5 @@
 Cliente
+- uuid: String<40>
 - potencial: LogicoEnum<SIM,NAO>
 - nomeCompleto: String<60>
 - nomeAbreviado: String<30>
@@ -27,3 +28,4 @@ Cliente
 - nomePai: String<60>
 - politicamenteExposta: LogicoEnum<SIM,NAO>
 - titular: LogicoEnum<SIM,NAO>
+- carteira: Carteira

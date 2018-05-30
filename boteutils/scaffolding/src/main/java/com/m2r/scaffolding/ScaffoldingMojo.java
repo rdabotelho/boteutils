@@ -40,7 +40,9 @@ public class ScaffoldingMojo extends AbstractMojo {
 			.append("[INFO] --- 0) All (repository, service, controller, label properties, view)\n")
 			.append("[INFO] --- 1) Model\n")
 			.append("[INFO] --- 2) View\n")
-			.append("[INFO] --- 3) Nothing\n")
+			.append("[INFO] --- 3) DDL\n")
+			.append("[INFO] --- 4) Angular Model\n")
+			.append("[INFO] --- 5) Nothing\n")
 			.append("[INFO] --- (0): ");
 		String line = ConsoleReader.readFromConsole(str.toString(), "0");
 		
@@ -64,6 +66,26 @@ public class ScaffoldingMojo extends AbstractMojo {
 			}		
 			scaffolding.configureEnviroment(model);
 			generateView(scaffolding);;
+			break;
+		case "3": 
+			if (model == null) {
+				model = ConsoleReader.readFromConsole("[INFO] --- Enter with the Model: ");	
+				if (model == null || model.equals("")) {
+					throw new MojoExecutionException("Parameter model doesn't defined!");
+				}
+			}		
+			scaffolding.configureEnviroment(model);
+			generateDDL(scaffolding);;
+			break;
+		case "4": 
+			if (model == null) {
+				model = ConsoleReader.readFromConsole("[INFO] --- Enter with the Model: ");	
+				if (model == null || model.equals("")) {
+					throw new MojoExecutionException("Parameter model doesn't defined!");
+				}
+			}		
+			scaffolding.configureEnviroment(model);
+			generateAngularModel(scaffolding);
 			break;
 		case "1": 
 			ModelProperties modelProperties = new ModelProperties();
@@ -89,6 +111,14 @@ public class ScaffoldingMojo extends AbstractMojo {
 	
 	private void generateView(Scaffolding scaffolding) throws MojoExecutionException, MojoFailureException {
 		scaffolding.generateView();				
+	}
+	
+	private void generateDDL(Scaffolding scaffolding) throws MojoExecutionException, MojoFailureException {
+		scaffolding.generateDDL();				
+	}
+	
+	private void generateAngularModel(Scaffolding scaffolding) throws MojoExecutionException, MojoFailureException {
+		scaffolding.generateAngularModel();				
 	}
 	
 }

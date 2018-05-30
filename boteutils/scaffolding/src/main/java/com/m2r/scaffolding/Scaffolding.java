@@ -61,6 +61,28 @@ public class Scaffolding {
 			e.printStackTrace();
 		}		
 	}
+
+	public void generateDDL() {
+		try {
+			File file = new File(getModelClassWrapper().getDDLPath());
+			this.margeAndSaveFromTemplate(file, "ddl.vm");
+			mojo.getLog().info("Created ddl: " + file.getPath());
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
+
+	public void generateAngularModel() {
+		try {
+			File file = new File(getModelClassWrapper().getAngularModelPath());
+			this.margeAndSaveFromTemplate(file, "angular.vm");
+			mojo.getLog().info("Created angular model: " + file.getPath());
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
 	
 	private void generateEnums() throws Exception {
 		for (ModelField modelField : getModelClass().getViewedFields()) {

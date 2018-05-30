@@ -30,7 +30,7 @@ public class $modelClass.simpleName implements BaseModel<Long>, ScaffoldModel {
 	@Id
 	@SequenceGenerator(name = "SEQ_${modelClass.tableName}", sequenceName = "SEQ_${modelClass.tableName}", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_${modelClass.tableName}")
-	@Column(name = "ID_${modelClass.tableName}")
+	@Column(name = "ID_${modelClass.tableName}", nullable=false)
 	private Long id;
 
 #foreach($field in $modelClass.viewedFields)

@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -16,6 +17,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.m2r.scaffolding.utils.ClassScaffold;
+import com.m2r.scaffolding.utils.FieldScaffold;
+import com.m2r.scaffolding.utils.ScaffoldModel;
 import com.m2r.scaffoldingtest.enums.CapacidadeCivelEnum;
 import com.m2r.scaffoldingtest.enums.EstadoCivilEnum;
 import com.m2r.scaffoldingtest.enums.GrauInstrucaoEnum;
@@ -26,115 +30,182 @@ import com.m2r.scaffoldingtest.enums.TipoContaEnum;
 
 @Entity
 @Table(name = "CLIENTE")
-public class Cliente implements BaseModel<Long> {
+@ClassScaffold(label="Cliente", icon="fa-file-o")
+public class Cliente implements BaseModel<Long>, ScaffoldModel {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@SequenceGenerator(name = "SEQ_CLIENTE", sequenceName = "SEQ_CLIENTE", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CLIENTE")
-	@Column(name = "ID_CLIENTE")
+	@Column(name = "ID_CLIENTE", nullable=false)
 	private Long id;
 
-	@Column(name = "POTENCIAL", nullable=true)
+	@Column(name = "TX_UUID", nullable=true, length=40)
+	@FieldScaffold(label="Uuid", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=40)
+	private String uuid;
+	
+	
+	@Column(name = "EN_POTENCIAL", nullable=true, length=8)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Potencial", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=8)
 	private LogicoEnum potencial;
 	
-	@Column(name = "NOME_COMPLETO", nullable=true, length=60)
+	
+	@Column(name = "NO_COMPLETO", nullable=true, length=60)
+	@FieldScaffold(label="Nome Completo", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=60)
 	private String nomeCompleto;
 	
-	@Column(name = "NOME_ABREVIADO", nullable=true, length=30)
+	
+	@Column(name = "NO_ABREVIADO", nullable=true, length=30)
+	@FieldScaffold(label="Nome Abreviado", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=30)
 	private String nomeAbreviado;
 	
-	@Column(name = "SEXO", nullable=true)
+	
+	@Column(name = "EN_SEXO", nullable=true, length=14)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Sexo", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=14)
 	private SexoEnum sexo;
 	
-	@Column(name = "GRAU_INSTRUCAO", nullable=true)
+	
+	@Column(name = "EN_GRAU_INSTRUCAO", nullable=true, length=34)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Grau Instrucao", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=34)
 	private GrauInstrucaoEnum grauInstrucao;
 	
-	@Column(name = "ESTADO_CIVIL", nullable=true)
+	
+	@Column(name = "EN_ESTADO_CIVIL", nullable=true, length=18)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Estado Civil", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=18)
 	private EstadoCivilEnum estadoCivil;
 	
-	@Column(name = "NASCIMENTO", nullable=true)
+	
+	@Column(name = "DT_NASCIMENTO", nullable=true)
+	@FieldScaffold(label="Nascimento", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
 	private LocalDate nascimento;
 	
-	@Column(name = "CAPACIDADE_CIVIL", nullable=true)
+	
+	@Column(name = "EN_CAPACIDADE_CIVIL", nullable=true, length=26)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Capacidade Civil", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=26)
 	private CapacidadeCivelEnum capacidadeCivil;
 	
-	@Column(name = "NACIONALIDADE", nullable=true, length=30)
+	
+	@Column(name = "TX_NACIONALIDADE", nullable=true, length=30)
+	@FieldScaffold(label="Nacionalidade", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=30)
 	private String nacionalidade;
 	
-	@Column(name = "ESTADO", nullable=true, length=2)
+	
+	@Column(name = "TX_ESTADO", nullable=true, length=2)
+	@FieldScaffold(label="Estado", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=2)
 	private String estado;
 	
-	@Column(name = "CIDADE", nullable=true, length=60)
+	
+	@Column(name = "TX_CIDADE", nullable=true, length=60)
+	@FieldScaffold(label="Cidade", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=60)
 	private String cidade;
 	
-	@Column(name = "AUTORIZA_CONSULTA_S_C_R", nullable=true)
+	
+	@Column(name = "EN_AUTORIZA_CONSULTA_S_C_R", nullable=true, length=8)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Autoriza Consulta S C R", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=8)
 	private LogicoEnum autorizaConsultaSCR;
 	
-	@Column(name = "PEP", nullable=true)
+	
+	@Column(name = "EN_PEP", nullable=true, length=8)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Pep", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=8)
 	private LogicoEnum pep;
 	
-	@Column(name = "PEP_RELACIONADO", nullable=true)
+	
+	@Column(name = "EN_PEP_RELACIONADO", nullable=true, length=8)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Pep Relacionado", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=8)
 	private LogicoEnum pepRelacionado;
 	
-	@Column(name = "TIPO_CONTA", nullable=true)
+	
+	@Column(name = "EN_TIPO_CONTA", nullable=true, length=17)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Tipo Conta", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=17)
 	private TipoContaEnum tipoConta;
 	
-	@Column(name = "POSSUE_RENDA", nullable=true)
+	
+	@Column(name = "EN_POSSUE_RENDA", nullable=true, length=8)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Possue Renda", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=8)
 	private LogicoEnum possueRenda;
 	
-	@Column(name = "SERVIDOR_PUBLICO", nullable=true)
+	
+	@Column(name = "EN_SERVIDOR_PUBLICO", nullable=true, length=8)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Servidor Publico", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=8)
 	private LogicoEnum servidorPublico;
 	
-	@Column(name = "NECESSIDADE_ESPECIAIS", nullable=true)
+	
+	@Column(name = "EN_NECESSIDADE_ESPECIAIS", nullable=true, length=8)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Necessidade Especiais", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=8)
 	private LogicoEnum necessidadeEspeciais;
 	
-	@Column(name = "SITUACAO_ESPECIAL", nullable=true)
+	
+	@Column(name = "EN_SITUACAO_ESPECIAL", nullable=true, length=8)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Situacao Especial", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=8)
 	private LogicoEnum situacaoEspecial;
 	
-	@Column(name = "PROPOSITO_RELACAO_NEGOCIO", nullable=true, length=60)
+	
+	@Column(name = "TX_PROPOSITO_RELACAO_NEGOCIO", nullable=true, length=60)
+	@FieldScaffold(label="Proposito Relacao Negocio", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=60)
 	private String propositoRelacaoNegocio;
 	
-	@Column(name = "PRESTACAO_GARANTIA", nullable=true, length=60)
+	
+	@Column(name = "TX_PRESTACAO_GARANTIA", nullable=true, length=60)
+	@FieldScaffold(label="Prestacao Garantia", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=60)
 	private String prestacaoGarantia;
 	
-	@Column(name = "PRODUTOS_SELECIONADOS", nullable=true)
+	
+	@Column(name = "EN_PRODUTOS_SELECIONADOS", nullable=true, length=23)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Produtos Selecionados", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=23)
 	private ProdutosEnum produtosSelecionados;
 	
-	@Column(name = "ATIVIDADE", nullable=true, length=10)
+	
+	@Column(name = "TX_ATIVIDADE", nullable=true, length=10)
+	@FieldScaffold(label="Atividade", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=10)
 	private String atividade;
 	
-	@Column(name = "GRAU_INTERESSE", nullable=true)
+	
+	@Column(name = "NU_GRAU_INTERESSE", nullable=true)
+	@FieldScaffold(label="Grau Interesse", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
 	private Integer grauInteresse;
 	
-	@Column(name = "NOME_MAE", nullable=true, length=60)
+	
+	@Column(name = "NO_MAE", nullable=true, length=60)
+	@FieldScaffold(label="Nome Mae", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=60)
 	private String nomeMae;
 	
-	@Column(name = "NOME_PAI", nullable=true, length=60)
+	
+	@Column(name = "NO_PAI", nullable=true, length=60)
+	@FieldScaffold(label="Nome Pai", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=60)
 	private String nomePai;
 	
-	@Column(name = "POLITICAMENTE_EXPOSTA", nullable=true)
+	
+	@Column(name = "EN_POLITICAMENTE_EXPOSTA", nullable=true, length=8)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Politicamente Exposta", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=8)
 	private LogicoEnum politicamenteExposta;
 	
-	@Column(name = "TITULAR", nullable=true)
+	
+	@Column(name = "EN_TITULAR", nullable=true, length=8)
 	@Enumerated(EnumType.STRING)
+	@FieldScaffold(label="Titular", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=8)
 	private LogicoEnum titular;
+	
+	
+	@OneToMany
+	@FieldScaffold(label="Carteira", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
+	private Carteira carteira;
+	
 	
 	@Override
 	public Long getId() {
@@ -145,6 +216,14 @@ public class Cliente implements BaseModel<Long> {
 		this.id = id;
 	}
 
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+	
 	public LogicoEnum getPotencial() {
 		return potencial;
 	}
@@ -367,6 +446,14 @@ public class Cliente implements BaseModel<Long> {
 
 	public void setTitular(LogicoEnum titular) {
 		this.titular = titular;
+	}
+	
+	public Carteira getCarteira() {
+		return carteira;
+	}
+
+	public void setCarteira(Carteira carteira) {
+		this.carteira = carteira;
 	}
 	
 	@Override

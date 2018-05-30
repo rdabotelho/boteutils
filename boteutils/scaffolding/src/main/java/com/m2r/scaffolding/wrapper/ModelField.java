@@ -80,6 +80,10 @@ public class ModelField {
 		return name;
 	}
 	
+	public String getNameToInstanceName() {
+		return name.substring(0, 1).toUpperCase() + name.substring(1);
+	}
+	
 	public Class<?> getType() {
 		return type;
 	}
@@ -125,6 +129,10 @@ public class ModelField {
 	
 	public String getRelatedModel() {
 		return relatedModel;
+	}
+	
+	public void setRelatedModel(String relatedModel) {
+		this.relatedModel = relatedModel;
 	}
 	
 	public boolean isDisabled() {
@@ -191,6 +199,12 @@ public class ModelField {
 
 	public void setEnumValues(String enumValues) {
 		this.enumValues = enumValues;
+		if (maxLength == null && isEnumType()) {
+			int el = getEnumValueMaxLength();
+			if (el > 0) {
+				maxLength = el;
+			}
+		}
 	}
 
 	public boolean isSelectWithFilter() {
@@ -254,6 +268,10 @@ public class ModelField {
 		return getType().isAssignableFrom(Set.class) || getType().isAssignableFrom(List.class);
 	}
 
+	public boolean isDateTime() {
+		return isLocalDateType() || isLocalTimeType() || isLocalDateTimeType();
+	}
+	
 	public boolean isLocalDateType() {
 		return getType().equals(LocalDate.class);
 	}
@@ -284,6 +302,20 @@ public class ModelField {
 	public List<String> getListEnumValues() {
 		String values = enumValues != null ? enumValues: "";
 		return Stream.of(values.split(",")).collect(Collectors.toList());
+	}
+	
+	public Integer getEnumValueMaxLength() {
+		List<String> list = getListEnumValues();
+		if (list.isEmpty()) {
+			return 20;
+		}
+		int max = 0;
+		for (String v : list) {
+			if (v.length() > max) {
+				max = v.length(); 
+			}
+		}
+		return max + 5;
 	}
 
 }

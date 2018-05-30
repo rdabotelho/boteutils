@@ -73,35 +73,56 @@ public class ParserScript {
 			if (hasParams) {
 				properties.put("MODEL_PROPERTY_LENGTH_" + newId, getTokens().get(5).getValue());
 			}
+			String colummnName = properties.get("MODEL_PROPERTY_COLUMN_NAME_" + newId);
+			if (colummnName.toUpperCase().startsWith("NOME_")) {
+				colummnName = "NO_" + colummnName.substring(5);
+				properties.put("MODEL_PROPERTY_COLUMN_NAME_" + newId, colummnName);
+			}
+			else if (colummnName.toUpperCase().equals("NOME")) {
+				colummnName = "NO_" + properties.get("MODEL_TABLE");
+				properties.put("MODEL_PROPERTY_COLUMN_NAME_" + newId, colummnName);
+			}
+			else {
+				applyPrefix(properties, newId, "TX");
+			}
 			break;
 		case "Integer":
 			properties.put("MODEL_PROPERTY_TYPE_" + newId, "2");
+			applyPrefix(properties, newId, "NU");
 			break;
 		case "Long":
 			properties.put("MODEL_PROPERTY_TYPE_" + newId, "3");
+			applyPrefix(properties, newId, "NU");
 			break;
 		case "BigInteger":
 			properties.put("MODEL_PROPERTY_TYPE_" + newId, "4");
+			applyPrefix(properties, newId, "NU");
 			break;
 		case "Float":
 			properties.put("MODEL_PROPERTY_TYPE_" + newId, "5");
+			applyPrefix(properties, newId, "VL");
 			break;
 		case "Double":
 			properties.put("MODEL_PROPERTY_TYPE_" + newId, "6");
+			applyPrefix(properties, newId, "VL");
 			break;
 		case "BigDecimal":
 			properties.put("MODEL_PROPERTY_TYPE_" + newId, "7");
 			properties.put("MODEL_PROPERTY_DECIMAL_PRECISION_" + newId, "8");
 			properties.put("MODEL_PROPERTY_DECIMAL_SCALE_" + newId, "2");
+			applyPrefix(properties, newId, "VL");
 			break;
 		case "LocalDate":
 			properties.put("MODEL_PROPERTY_TYPE_" + newId, "8");
+			applyPrefix(properties, newId, "DT");
 			break;
 		case "LocalTime":
 			properties.put("MODEL_PROPERTY_TYPE_" + newId, "9");
+			applyPrefix(properties, newId, "HR");
 			break;
 		case "LocalDateTime":
 			properties.put("MODEL_PROPERTY_TYPE_" + newId, "10");
+			applyPrefix(properties, newId, "DT");
 			break;
 		default:
 			if (tokenType.getValue().endsWith("Enum") ) {
@@ -114,20 +135,30 @@ public class ParserScript {
 					}
 					properties.put("MODEL_PROPERTY_ENUM_VALUES_" + newId, str.toString());
 				}
+				applyPrefix(properties, newId, "EN");
 			}
 			else if (tokenType.getValue().startsWith("Set")) {
 				properties.put("MODEL_PROPERTY_TYPE_" + newId, "13");
 				properties.put("MODEL_PROPERTY_RELATED_MODEL_" + newId, getTokens().get(5).getValue());
+				applyPrefix(properties, newId, "ID");
 			}
 			else if (tokenType.getValue().startsWith("List")) {
 				properties.put("MODEL_PROPERTY_TYPE_" + newId, "14");				
 				properties.put("MODEL_PROPERTY_RELATED_MODEL_" + newId, getTokens().get(5).getValue());
+				applyPrefix(properties, newId, "ID");
 			}
 			else {
 				properties.put("MODEL_PROPERTY_TYPE_" + newId, "12");
+				properties.put("MODEL_PROPERTY_RELATED_MODEL_" + newId, tokenType.getValue());
+				applyPrefix(properties, newId, "ID");
 			}
 		}
 		
+	}
+	
+	private void applyPrefix(Map<String, String> properties, int newId, String prefix) {
+		String key = "MODEL_PROPERTY_COLUMN_NAME_" + newId;
+		properties.put(key, prefix + "_" + properties.get(key));
 	}
 	
 	public List<Token> getTokens() {

@@ -15,20 +15,27 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import com.m2r.scaffolding.utils.ClassScaffold;
+import com.m2r.scaffolding.utils.FieldScaffold;
+import com.m2r.scaffolding.utils.ScaffoldModel;
+
 @Entity
 @Table(name = "CARTEIRA")
-public class Carteira implements BaseModel<Long> {
+@ClassScaffold(label="Carteira", icon="fa-file-o")
+public class Carteira implements BaseModel<Long>, ScaffoldModel {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@SequenceGenerator(name = "SEQ_CARTEIRA", sequenceName = "SEQ_CARTEIRA", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_CARTEIRA")
-	@Column(name = "ID_CARTEIRA")
+	@Column(name = "ID_CARTEIRA", nullable=false)
 	private Long id;
 
 	@OneToMany
+	@FieldScaffold(label="Clientes", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
 	private List<Cliente> clientes;
+	
 	
 	@Override
 	public Long getId() {

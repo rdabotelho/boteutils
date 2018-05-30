@@ -3,6 +3,8 @@ package com.m2r.scaffolding.wrapper;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import javax.persistence.Column;
+
 import com.m2r.scaffolding.utils.FieldScaffold;
 
 public class ModelFieldAdapter extends ModelField {
@@ -30,6 +32,22 @@ public class ModelFieldAdapter extends ModelField {
 		isRequired = (scaffoldingAnnotation != null && scaffoldingAnnotation.isRequired()) || (isAnnotationPresent("nullable=false"));
 		isViewedOnTable = scaffoldingAnnotation != null && scaffoldingAnnotation.isViewedOnTable();
 		columnWidth = scaffoldingAnnotation != null && !scaffoldingAnnotation.columnWidth().equals("") ? scaffoldingAnnotation.columnWidth() : null;		
+		
+		Column column = field.getAnnotation(Column.class);
+		if (column != null) {
+			columnName = column.name();
+			if (maxLength == null && column.length() < 255) {
+				maxLength = column.length();
+			}
+			precision = 8;
+			scale = 2;
+			if (column.precision() > 0) {
+				precision = column.precision(); 
+			}
+			if (column.scale() > 0) {
+				precision = column.scale(); 
+			}
+		}
 	}
 	
 	public boolean isAnnotationPresent(final String content) {

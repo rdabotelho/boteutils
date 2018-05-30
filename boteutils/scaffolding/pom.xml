@@ -45,7 +45,12 @@
 		     <groupId>org.apache.velocity</groupId>
 		     <artifactId>velocity-tools</artifactId>
 		     <version>2.0</version>
-		</dependency>		
+		</dependency>
+		<dependency>
+		    <groupId>org.hibernate.javax.persistence</groupId>
+		    <artifactId>hibernate-jpa-2.1-api</artifactId>
+		    <version>1.0.0.Final</version>
+		</dependency>
 		<dependency>
 		    <groupId>com.m2r.boteutils</groupId>
 		    <artifactId>scaffolding-utils</artifactId>
