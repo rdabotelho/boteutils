@@ -48,9 +48,10 @@ public class $modelClass.simpleName implements BaseModel<Long>, ScaffoldModel {
 #end
 #end
 #if($field.modelType)
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_${modelClass.tableName}") // For unidirectional remove this line
 #elseif($field.collectionType)
-	@OneToMany
+	@OneToMany(mappedBy="${modelClass.modelInstanceName}") // For unidirectional remove the mappedBy and add @JoinColumn(name = "ID_${modelClass.tableName}")
 #else
 	@Column(name = "${field.columnName}", nullable=$field.nullable$utils.attributeNumber(", length",${field.maxLength})$utils.attributeNumber(", precision",${field.precision})$utils.attributeNumber(", scale",${field.scale}))
 #end
