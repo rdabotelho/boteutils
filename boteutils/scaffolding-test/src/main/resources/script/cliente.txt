@@ -37,3 +37,5 @@ Cliente
 - enquadramentoContabil: EnquadramentoContabil
 - renda: Renda
 - ocupacao: Ocupacao
+- fluxoCaixa: FluxoCaixa
+- conceitoPessoa: ConceitoPessoa

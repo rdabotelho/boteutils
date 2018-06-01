@@ -1,0 +1,4 @@
+ConceitoPessoa
+- dataReferencia: LocalDate
+- conceitoPraca: ConceitoPracaEnum<BOM,RAZOAVEL,RUIM>
+- habitoPagamento: HabitoPagamentoEnum<SEM_EXPERIENCIA>

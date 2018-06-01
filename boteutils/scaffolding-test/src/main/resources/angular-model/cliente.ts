@@ -122,6 +122,27 @@ export class Cliente extends EntidadeBase{
     @OneToMany(type => Telefone)
     telefones: Telefone[];
 
+    @OneToMany(type => Localizacao)
+    enderecos: Localizacao[];
+
+    @OneToOne(type => EnquadramentoContabil, {
+        cascade: true
+    })
+    @JoinColumn()
+    enquadramentoContabil: EnquadramentoContabil;
+
+    @OneToOne(type => Renda, {
+        cascade: true
+    })
+    @JoinColumn()
+    renda: Renda;
+
+    @OneToOne(type => Ocupacao, {
+        cascade: true
+    })
+    @JoinColumn()
+    ocupacao: Ocupacao;
+
     getNascimento():Date{
         return this.millisecondsToDate(this.msNascimento);
     }

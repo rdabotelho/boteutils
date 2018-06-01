@@ -1,0 +1,11 @@
+FluxoCaixa
+- receitaOperacional: BigDecimal
+- receitaNaoOperacional: BigDecimal
+- custoMercadoria: BigDecimal
+- pagamentoPessoal: BigDecimal
+- transporte: BigDecimal
+- aguaLuzTelefone: BigDecimal
+- taxaAluguel: BigDecimal
+- outrosCustos: BigDecimal
+- outrasDespesas: BigDecimal
+- outrosPagamentos: BigDecimal

@@ -217,6 +217,14 @@ public class Cliente implements BaseModel<Long>, ScaffoldModel {
 	@FieldScaffold(label="Ocupacao", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
 	private Ocupacao ocupacao;
 	
+    @OneToOne
+	@FieldScaffold(label="Fluxo Caixa", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
+	private FluxoCaixa fluxoCaixa;
+	
+    @OneToOne
+	@FieldScaffold(label="Conceito Pessoa", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
+	private ConceitoPessoa conceitoPessoa;
+	
 	@Override
 	public Long getId() {
 		return this.id;
@@ -536,6 +544,22 @@ public class Cliente implements BaseModel<Long>, ScaffoldModel {
 
 	public void setOcupacao(Ocupacao ocupacao) {
 		this.ocupacao = ocupacao;
+	}
+	
+	public FluxoCaixa getFluxoCaixa() {
+		return fluxoCaixa;
+	}
+
+	public void setFluxoCaixa(FluxoCaixa fluxoCaixa) {
+		this.fluxoCaixa = fluxoCaixa;
+	}
+	
+	public ConceitoPessoa getConceitoPessoa() {
+		return conceitoPessoa;
+	}
+
+	public void setConceitoPessoa(ConceitoPessoa conceitoPessoa) {
+		this.conceitoPessoa = conceitoPessoa;
 	}
 	
 	@Override
