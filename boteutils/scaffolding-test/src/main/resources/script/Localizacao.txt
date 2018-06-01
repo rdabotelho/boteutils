@@ -1,0 +1,16 @@
+Localizacao
+- consultaCep: LogicoEnum<SIM,NAO>
+- indicativoZonaUrbana: LogicoEnum<SIM,NAO>
+- tipoEndereco: TipoEnderecoEnum<RESIDENCIAL,COMERCIAL>
+- tipoComprovante: TipoComprovanteEnum<CONTA_GAS,CONTA_INTERNET,CONTA_LUZ,CONTA_TELEFONE_FIXO,CONTA_TELEFONE_MOVEL,CONTA_TV_POR_ASSINATURA,CONTRATO_LOCACAO,ESCRITURA_DO_IMOVEL,EXTRATO_BANCARIO,FATURA_CARTAO_CREDITO,REGISTRO_IMOVEL,OUTROS>
+- cep: String<8>
+- logradouro: String<60>
+- numero: String<10>
+- uf: String<2>
+- cidade: String<60>
+- complemento: String<60>
+- perimetro: String<60>
+- bairro: String<60>
+- tempoUtilizacao: Integer
+- enderecoCorrespondencia: LogicoEnum<SIM,NAO>
+- imovelProprio: LogicoEnum<SIM,NAO>

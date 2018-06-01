@@ -1,0 +1,7 @@
+DadosCaptura
+- fotoCliente: Arquivo
+- tipoIdentificacao: TipoIdentificacaoEnum<RG,CNH,CTPS>
+- documentoIdentificacao: Arquivo
+- cpf: Arquivo
+- comprovanteResidencia: Arquivo
+- fotoEmpreendimento: Arquivo

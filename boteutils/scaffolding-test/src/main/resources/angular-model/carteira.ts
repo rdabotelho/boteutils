@@ -8,6 +8,12 @@ export class Carteira extends EntidadeBase{
     @PrimaryGeneratedColumn({name:"id_carteira"})
     id: number;
 
+    @OneToOne(type => Assessor, {
+        cascade: true
+    })
+    @JoinColumn()
+    assessor: Assessor;
+
     @OneToMany(type => Cliente)
     clientes: Cliente[];
 

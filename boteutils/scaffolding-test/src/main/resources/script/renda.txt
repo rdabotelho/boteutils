@@ -1,0 +1,8 @@
+Renda
+- rendaPrincipal: LogicoEnum<SIM,NAO>
+- natureza: NaturezaRendaEnum<RENDIMENTO_AUTONOMO>
+- tipoComprovante: TipoComprovanteEnum<FLUXO_CAIXA>
+- dataEmissao: LocalDate
+- inicioRenda: LocalDate
+- valorBruto: BigDecimal
+- valorLiquido: BigDecimal

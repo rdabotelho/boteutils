@@ -1,0 +1,5 @@
+Referencia
+- natureza: NaturezaReferenciaEnum<CONTRIBUINTE_INDIVIDUAL>
+- nome: String<60>
+- ddd: String<3>
+- telefone: String<15>

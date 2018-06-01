@@ -8,6 +8,9 @@ export class Cliente extends EntidadeBase{
     @PrimaryGeneratedColumn({name:"id_cliente"})
     id: number;
 
+    @Column({name:"nu_versao"})
+    versao: number;
+
     @Column({length:40, name:"tx_uuid"})
     uuid: string;
 
@@ -44,8 +47,8 @@ export class Cliente extends EntidadeBase{
     @Column({length:60, name:"tx_cidade"})
     cidade: string;
 
-    @Column({name:"en_autoriza_consulta_s_c_r"})
-    autorizaConsultaSCR: number;    
+    @Column({name:"en_autoriza_consulta_scr"})
+    autorizaConsultaScr: number;    
 
     @Column({name:"en_pep"})
     pep: number;    
@@ -100,6 +103,24 @@ export class Cliente extends EntidadeBase{
     })
     @JoinColumn()
     carteira: Carteira;
+
+    @OneToOne(type => DadosCaptura, {
+        cascade: true
+    })
+    @JoinColumn()
+    dadosCaptura: DadosCaptura;
+
+    @OneToMany(type => Identificacao)
+    identificacoes: Identificacao[];
+
+    @OneToOne(type => Referencia, {
+        cascade: true
+    })
+    @JoinColumn()
+    referencia: Referencia;
+
+    @OneToMany(type => Telefone)
+    telefones: Telefone[];
 
     getNascimento():Date{
         return this.millisecondsToDate(this.msNascimento);

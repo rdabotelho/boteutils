@@ -45,7 +45,7 @@ public class ModelFieldAdapter extends ModelField {
 				precision = column.precision(); 
 			}
 			if (column.scale() > 0) {
-				precision = column.scale(); 
+				scale = column.scale(); 
 			}
 		}
 	}

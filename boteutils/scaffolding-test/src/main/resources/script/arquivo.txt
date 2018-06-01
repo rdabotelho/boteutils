@@ -1,0 +1,4 @@
+Arquivo
+- nome: String<100>
+- tipo: String<50>
+- conteudo: Blob

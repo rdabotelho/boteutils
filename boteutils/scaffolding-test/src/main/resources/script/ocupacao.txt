@@ -1,0 +1,5 @@
+Ocupacao
+- codigoOcupacao: String<10>
+- principal: LogicoEnum<SIM,NAO>
+- possuiComprovante: LogicoEnum<SIM,NAO>
+- dataInicioOcupacao: LocalDate

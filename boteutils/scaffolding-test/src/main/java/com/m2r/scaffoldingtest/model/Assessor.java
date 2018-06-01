@@ -36,116 +36,94 @@ public class Assessor implements BaseModel<Long>, ScaffoldModel {
 	@Column(name = "ID_ASSESSOR", nullable=false)
 	private Long id;
 
-	@Column(name = "NO_ASSESSOR", nullable=true, length=60)
+	@Column(name = "NO_ASSESSOR", nullable=false, length=60)
 	@FieldScaffold(label="Nome", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=60)
 	private String nome;
 	
-	
-	@Column(name = "TX_CPF", nullable=true, length=11)
+	@Column(name = "TX_CPF", nullable=false, length=11)
 	@FieldScaffold(label="Cpf", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=11)
 	private String cpf;
 	
-	
-	@Column(name = "TX_RG", nullable=true, length=10)
+	@Column(name = "TX_RG", nullable=false, length=10)
 	@FieldScaffold(label="Rg", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=10)
 	private String rg;
-	
 	
 	@Column(name = "TX_TITULO_ELEITOR", nullable=true, length=20)
 	@FieldScaffold(label="Titulo Eleitor", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=20)
 	private String tituloEleitor;
 	
-	
 	@Column(name = "TX_CTPS", nullable=true, length=20)
 	@FieldScaffold(label="Ctps", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=20)
 	private String ctps;
 	
-	
-	@Column(name = "DT_NASCIMENTO", nullable=true)
+	@Column(name = "DT_NASCIMENTO", nullable=false)
 	@FieldScaffold(label="Nascimento", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
 	private LocalDate nascimento;
 	
-	
-	@Column(name = "TX_NATURALIDADE", nullable=true)
+	@Column(name = "TX_NATURALIDADE", nullable=false, length=20)
 	@FieldScaffold(label="Naturalidade", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
 	private String naturalidade;
 	
-	
-	@Column(name = "TX_NACIONALIDADE", nullable=true)
+	@Column(name = "TX_NACIONALIDADE", nullable=false, length=20)
 	@FieldScaffold(label="Nacionalidade", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
 	private String nacionalidade;
 	
-	
-	@Column(name = "EN_ESTADO_CIVIL", nullable=true, length=5)
+	@Column(name = "EN_ESTADO_CIVIL", nullable=false, length=5)
 	@Enumerated(EnumType.STRING)
 	@FieldScaffold(label="Estado Civil", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=5)
 	private EstadoCivilEnum estadoCivil;
-	
 	
 	@Column(name = "TX_TELEFONE_FIXO", nullable=true, length=15)
 	@FieldScaffold(label="Telefone Fixo", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=15)
 	private String telefoneFixo;
 	
-	
 	@Column(name = "TX_TELEFONE_MOVEL", nullable=true, length=15)
 	@FieldScaffold(label="Telefone Movel", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=15)
 	private String telefoneMovel;
-	
 	
 	@Column(name = "TX_REFERENCIA", nullable=true, length=30)
 	@FieldScaffold(label="Referencia", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=30)
 	private String referencia;
 	
-	
 	@Column(name = "TX_CEP", nullable=true, length=8)
 	@FieldScaffold(label="Cep", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=8)
 	private String cep;
-	
 	
 	@Column(name = "TX_ENDERECO", nullable=true, length=60)
 	@FieldScaffold(label="Endereco", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=60)
 	private String endereco;
 	
-	
 	@Column(name = "TX_NUMERO", nullable=true, length=6)
 	@FieldScaffold(label="Numero", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=6)
 	private String numero;
-	
 	
 	@Column(name = "TX_COMPLEMENTO", nullable=true, length=60)
 	@FieldScaffold(label="Complemento", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=60)
 	private String complemento;
 	
-	
 	@Column(name = "TX_CIDADE", nullable=true, length=60)
 	@FieldScaffold(label="Cidade", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=60)
 	private String cidade;
-	
 	
 	@Column(name = "TX_ESTADO", nullable=true, length=2)
 	@FieldScaffold(label="Estado", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true, maxlength=2)
 	private String estado;
 	
-	
 	@Column(name = "DT_INICIO_CONTRATO", nullable=true)
 	@FieldScaffold(label="Inicio Contrato", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
 	private LocalDate inicioContrato;
-	
 	
 	@Column(name = "DT_FIM_CONTRATO", nullable=true)
 	@FieldScaffold(label="Fim Contrato", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
 	private LocalDate fimContrato;
 	
-	
 	@Column(name = "VL_RENDIMENTO_BRUTO", nullable=true, precision=8, scale=2)
 	@FieldScaffold(label="Rendimento Bruto", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
 	private BigDecimal rendimentoBruto;
 	
-	
-    @OneToOne
+    @OneToOne(mappedBy="assessor")
 	@FieldScaffold(label="Carteira", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
 	private Carteira carteira;
-	
 	
 	@Override
 	public Long getId() {

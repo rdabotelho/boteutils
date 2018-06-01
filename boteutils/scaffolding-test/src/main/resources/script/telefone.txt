@@ -1,0 +1,6 @@
+Telefone
+- tipoTelefone: TipoTelefoneEnum<FIXO,CELULAR>
+- ddi: String<6>
+- ddd: String<3>
+- telefone: String<16>
+- ramal: String<10>

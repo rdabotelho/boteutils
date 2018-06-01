@@ -1,0 +1,4 @@
+EnquadramentoContabil
+- categoria: CategoriaEnqContabilEnum<PESSOA_FISICA,PESSOA_JURIDICA>
+- natureza: NaturezaEnqContabilEnum<CONTRIBUINTE_INDIVIDUAL>
+- Enquadramento: EnquadramentoEnum<PESSOA_FISICA_OUTROS>

@@ -5,8 +5,8 @@ Assessor
 - tituloEleitor: String<20>
 - ctps: String<20>
 - nascimento: LocalDate
-- naturalidade: String
-- nacionalidade: String
+- naturalidade: String<20>
+- nacionalidade: String<20>
 - estadoCivil: EstadoCivilEnum
 - telefoneFixo: String<15>
 - telefoneMovel: String<15>

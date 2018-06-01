@@ -26,10 +26,10 @@ export class Assessor extends EntidadeBase{
     @Column({name:"dt_nascimento"})
     msNascimento: number;
 
-    @Column({length:${field.maxLength}, name:"tx_naturalidade"})
+    @Column({length:20, name:"tx_naturalidade"})
     naturalidade: string;
 
-    @Column({length:${field.maxLength}, name:"tx_nacionalidade"})
+    @Column({length:20, name:"tx_nacionalidade"})
     nacionalidade: string;
 
     @Column({name:"en_estado_civil"})

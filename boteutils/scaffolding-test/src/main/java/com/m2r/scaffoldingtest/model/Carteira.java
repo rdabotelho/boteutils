@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -32,10 +33,13 @@ public class Carteira implements BaseModel<Long>, ScaffoldModel {
 	@Column(name = "ID_CARTEIRA", nullable=false)
 	private Long id;
 
+    @OneToOne
+	@FieldScaffold(label="Assessor", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
+	private Assessor assessor;
+	
 	@OneToMany
 	@FieldScaffold(label="Clientes", isfilter=false, isViewed=true, isRequired=false, isViewedOnTable=true)
 	private List<Cliente> clientes;
-	
 	
 	@Override
 	public Long getId() {
@@ -46,6 +50,14 @@ public class Carteira implements BaseModel<Long>, ScaffoldModel {
 		this.id = id;
 	}
 
+	public Assessor getAssessor() {
+		return assessor;
+	}
+
+	public void setAssessor(Assessor assessor) {
+		this.assessor = assessor;
+	}
+	
 	public List<Cliente> getClientes() {
 		return clientes;
 	}

@@ -1,0 +1,9 @@
+Identificacao
+- numero: String<20>
+- dataExpedicao: LocalDate
+- numeroVia: String<20>
+- origemDocumento: String<20>
+- orgaoEmissor: String<20>
+- estadoEmissor: String<2>
+- cidadeEmissor: String<60>
+- tipoIdentificacao: TipoIdentificacaoEnum<RG,CNH,CTPS>
