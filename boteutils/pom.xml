@@ -10,7 +10,6 @@
 	<url>http://maven.apache.org</url>
 
 	<properties>
-		<!-- parametros -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<junit.version>4.8.2</junit.version>
 		<maven.compiler.target>1.7</maven.compiler.target>
