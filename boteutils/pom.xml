@@ -21,6 +21,7 @@
 		<module>flatfile</module>
 		<module>extractor</module>
 		<module>ksutils</module>
+		<module>parser</module>
 		<module>scaffolding</module>
 		<module>scaffolding-utils</module>
 		<module>scaffolding-test</module>
