@@ -1,0 +1,3 @@
+cd "${projectBaseDir}"
+set mvn=${mavenHome}\bin\mvn.cmd
+%mvn% build-helper:parse-version versions:set -DnewVersion=${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.nextIncrementalVersion}-SNAPSHOT versions:commit
