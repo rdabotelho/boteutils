@@ -25,7 +25,6 @@
 		<module>scaffolding</module>
 		<module>scaffolding-utils</module>
 		<module>scaffolding-test</module>
-		<module>releaser-maven</module>
 	</modules>
 
 	<dependencyManagement>

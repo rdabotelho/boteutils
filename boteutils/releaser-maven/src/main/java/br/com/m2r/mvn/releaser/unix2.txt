@@ -1,3 +1,0 @@
-cd "${projectBaseDir}"
-mvn=${mavenHome}/bin/mvn.sh
-$mvn clean ${mvcmd} -Denv=${env} -DversionType=${versionType}

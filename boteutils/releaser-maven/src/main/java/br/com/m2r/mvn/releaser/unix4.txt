@@ -1,3 +1,0 @@
-cd "${projectBaseDir}"
-mvn=${mavenHome}/bin/mvn.sh
-$mvn scm:checkin -Dusername=${svnUser} -Dpassword=${svnPassword} "-Dmessage=${svnMessage}"

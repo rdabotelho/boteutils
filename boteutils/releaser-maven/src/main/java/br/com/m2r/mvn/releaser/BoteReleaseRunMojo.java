@@ -1,5 +1,7 @@
 package br.com.m2r.mvn.releaser;
 
+import java.io.File;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -61,28 +63,28 @@ public class BoteReleaseRunMojo extends AbstractMojo {
 	}
 	
 	private void _execute() throws Exception {
-		ScriptUtil script = new ScriptUtil();
-		script.getProperties().put("projectBaseDir", getProjectBaseDir());
-		script.getProperties().put("mavenHome", getMavenHome());
-		script.getProperties().put("versionType", getVersionType().name());
-		script.getProperties().put("env", getEnv().name());
-		script.getProperties().put("mvcmd", getDeploy() ? "deploy" : "install");
-		
-		script.execute(getOsType().getScript(1), getOsType(), getLog(), 1);
-		script.execute(getOsType().getScript(2), getOsType(), getLog(), 2);
-		script.execute(getOsType().getScript(3), getOsType(), getLog(), 3);		
+		ConsoleCommand script = ConsoleCommand.create()
+				
+			.inDir(getProjectBaseDir())
+			.withLog(getLog())
+			.withMavenHome(getMavenHome())
+			.inEnviroment(getEnv())
+			.withVersionType(getVersionType())
+			
+			.changeToReleaseVersion()
+			.generateRelease(getDeploy())
+			.changeToNextSnapshotVersion();
 		
 		if (getCommitSvn()) {
 			if (getProject().getScm() == null) {
 				getLog().error("Error performing SVN commit. Tag scm (url) not defined in pom.xml.");
 			}
 			else {
-				script.getProperties().put("svnUser", getSvnUser());
-				script.getProperties().put("svnPassword", getSvnPassword());
-				script.getProperties().put("svnMessage", String.format(getSvnMessage(), getProject().getVersion().replace("-SNAPSHOT", "")));
-				script.execute(getOsType().getScript(4), getOsType(), getLog(), 4);
+				script.scmCheckin(getSvnUser(), getSvnPassword(), String.format(getSvnMessage(), getProject().getVersion().replace("-SNAPSHOT", "")));
 			}
 		}
+		
+		script.execute();
 	}
 	
 	public OSEnum getOsType() {
@@ -167,6 +169,15 @@ public class BoteReleaseRunMojo extends AbstractMojo {
 
 	public void setSvnUser(String svnUser) {
 		this.svnUser = svnUser;
+	}
+	
+	public static void main(String[] args) {
+		String userHome = System.getProperty("user.home");
+		File pluginDir = new File(userHome, ".brmtmp");
+		if (!pluginDir.exists()) {
+			pluginDir.mkdirs();
+		}
+		System.out.println(pluginDir);
 	}
 	
 }
