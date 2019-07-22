@@ -1,0 +1,31 @@
+Wallet
+Balances:
+  0.00 BTC ESTIMATED
+  0.00 BTC AVAILABLE
+  0.00 BTC ESTIMATED_SPENDABLE
+  0.00 BTC AVAILABLE_SPENDABLE
+Transactions:
+  0 pending
+  0 unspent
+  0 spent
+  0 dead
+Last seen best block: 1569978 (2019-07-21T19:20:25Z): 00000000000001f9d6bdad9483b6eec3a1d973d4250f0b1b257223bda9f11ade
+
+Keys:
+Earliest creation time: 2019-07-21T19:33:38Z
+Seed birthday:     1563737618  [2019-07-21T19:33:38Z]
+Ouput script type: P2PKH
+Key to watch:      tpubD8nWG8Uv4d9UxaAS7knLtHJ6GHU1ck1QTr17ntDqF4FLs86bEvCwkHyL9gD4kp62czaTXufxDys3i1RrqgHs1PTpQMevejAydN2xBuJzXCH
+Lookahead siz/thr: 100/33
+  addr:mn1jBrJSbWAQNVQKxuPkCjb6z4LYP6azsc  hash160:4741e05fd656bfb6ef4ff052eaa232048d11d497  (M, root)
+  addr:mv6HkUgSRY2Bm5dUieLvM9mUcSBAQNmugk  hash160:9fdfba79993de29243402b5ab13d80aef0e3ad18  (M/0H, account)
+  addr:mwVFdBSXvntGa22g56BMno1FLpJJz8HjyN  hash160:af2fa593874f9664e81233bfb950d0becffd96c9  (M/0H/0, external)
+  addr:mkWTh76hQSGKLsPie7rZ7N1fsdCdfdQmE7  hash160:36c0c0b19dad73c7b225e220e9c29783f6fed7b6  (M/0H/1, internal)
+  addr:mqiDSmror6ipaPKTPCeEkvBWmP6zXMzZvv  hash160:6fd27af46468909cd704b848793cbe81ec894379  (M/0H/0/0)
+
+
+
+Teste2 SecretKey: tpubD8nWG8Uv4d9UxaAS7knLtHJ6GHU1ck1QTr17ntDqF4FLs86bEvCwkHyL9gD4kp62czaTXufxDys3i1RrqgHs1PTpQMevejAydN2xBuJzXCH
+Teste2 Address: mqiDSmror6ipaPKTPCeEkvBWmP6zXMzZvv
+Teste2 Balance: 0.00 BTC
+Teste2 URL: https://live.blockcypher.com/btc-testnet/address/mqiDSmror6ipaPKTPCeEkvBWmP6zXMzZvv/

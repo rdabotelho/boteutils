@@ -1,0 +1,31 @@
+Wallet
+Balances:
+  0.00 BTC ESTIMATED
+  0.00 BTC AVAILABLE
+  0.00 BTC ESTIMATED_SPENDABLE
+  0.00 BTC AVAILABLE_SPENDABLE
+Transactions:
+  0 pending
+  0 unspent
+  0 spent
+  0 dead
+Last seen best block: 1569978 (2019-07-21T19:20:25Z): 00000000000001f9d6bdad9483b6eec3a1d973d4250f0b1b257223bda9f11ade
+
+Keys:
+Earliest creation time: 2019-07-21T19:31:13Z
+Seed birthday:     1563737473  [2019-07-21T19:31:13Z]
+Ouput script type: P2PKH
+Key to watch:      tpubD8kVu6w6uQ26U6Gg224rcsQg7ktkcW2XxPAcDSvtYgk7FsRGZ6VKxnyuPpzeTnz8hAAnrvV5f6RJ2GuYo5qGyv5RC2ogTASfDTNEFwBcHEE
+Lookahead siz/thr: 100/33
+  addr:mmaqwwKT7RQJyU8bro4izHFFCrGo7ywbmG  hash160:428d1ed774c49bfb2a59fdd115c8f214e4fdee53  (M, root)
+  addr:mnmkXU2WYEy1ot1dgpB9zmAfknS2NPbar8  hash160:4f954bbd6f169408c6aded8c4c9ade464a02541f  (M/0H, account)
+  addr:mm59d9wJBbamGMuZMGJegBuhYPdMGot59G  hash160:3cef659de6ccc4e574e5f3ff498f9bd0edb36dc5  (M/0H/0, external)
+  addr:mmJ8jRHSqJsnbhXmtbH85sgtZb1KKSCX12  hash160:3f640f523c8a56e4dca23974d410f489d9f9d19c  (M/0H/1, internal)
+  addr:mhA6aStoBCNUEc8iaes93ZQhxMa15NBEwd  hash160:11fe6e2ccec169f2891ac0bda0e1f2b86bcd23fc  (M/0H/0/0)
+
+
+
+Teste1 SecretKey: tpubD8kVu6w6uQ26U6Gg224rcsQg7ktkcW2XxPAcDSvtYgk7FsRGZ6VKxnyuPpzeTnz8hAAnrvV5f6RJ2GuYo5qGyv5RC2ogTASfDTNEFwBcHEE
+Teste1 Address: mhA6aStoBCNUEc8iaes93ZQhxMa15NBEwd
+Teste1 Balance: 0.00 BTC
+Teste1 URL: https://live.blockcypher.com/btc-testnet/address/mhA6aStoBCNUEc8iaes93ZQhxMa15NBEwd/
