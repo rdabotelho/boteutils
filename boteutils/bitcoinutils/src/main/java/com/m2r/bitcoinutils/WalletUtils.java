@@ -7,6 +7,9 @@ import org.bitcoinj.core.Coin;
 import org.bitcoinj.core.InsufficientMoneyException;
 import org.bitcoinj.core.PeerGroup;
 import org.bitcoinj.core.Transaction;
+import org.bitcoinj.crypto.DeterministicKey;
+import org.bitcoinj.script.Script.ScriptType;
+import org.bitcoinj.wallet.DeterministicKeyChain;
 import org.bitcoinj.wallet.KeyChain.KeyPurpose;
 import org.bitcoinj.wallet.Wallet;
 
@@ -105,25 +108,52 @@ public class WalletUtils {
     		new Executor() {
 				@Override
 				public void execute(Runnable command) {
-					String txUrl = bitcoinUtils.networkType.getUlrToTransaction(sendResult.tx.toString());
-			        System.out.println("Transaction URL: " + txUrl);			         
+					String txUrl = bitcoinUtils.networkType.getUlrToTransaction(sendResult.tx.getTxId().toString());
+			        System.out.println("\nTransaction URL: " + txUrl);			         
 				}
 			}			
 		);		
 	}
 	
-	public void printSummary() {		
+	public Address getRootPublicAddress(BitcoinNetworkType networkType) {
+		if (networkType == null) {
+			return null;
+		}
+		
+		Address found = null;
+		for (DeterministicKeyChain keyChain : this.wallet.getActiveKeyChains()) {
+			for (DeterministicKey k : keyChain.getIssuedReceiveKeys()) {
+				if (k.getPathAsString().equals("M/0H/0/0")) {
+					found = Address.fromKey(networkType.getNetworkParameters(), k, ScriptType.P2PKH);
+					break;
+				}
+			}
+			if (found != null) {
+				break;
+			}
+		}
+		return found;
+	}
+	
+	public void printSummary(BitcoinNetworkType networkType) {		
+		Address rootAddress = getRootPublicAddress(networkType); 
         System.out.println("\nSecretKeyWif: " + this.getWatchingKey().getPrivateKeyAsWiF());
         System.out.println("SecretKeyB58: " + this.getWatchingKey().getPrivateKeyAsB58());      
-		System.out.println("Address: " + this.getAddressToReceiveFunds().toString());
+		System.out.println("Address Root: " + (rootAddress != null ? rootAddress.toString() : ""));
+		System.out.println("Address To Receive: " + this.getAddressToReceiveFunds().toString());
 		System.out.println("Balance: " + this.getBalanceToFriendlyString());
 		System.out.println("URL: " + this.getURLToAddress());
 		System.out.println();
 	}
 	
+	@Deprecated
 	public void printInfo() {
-		printInfo();
-		System.out.println(wallet);
+		printInfo(null);
+	}
+	
+	public void printInfo(BitcoinNetworkType networkType) {
+		printSummary(networkType);
+		System.out.println(wallet.toString());
 	}	
 
 }

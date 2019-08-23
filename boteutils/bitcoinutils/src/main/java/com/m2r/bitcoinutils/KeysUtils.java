@@ -1,6 +1,5 @@
 package com.m2r.bitcoinutils;
 
-import org.bitcoinj.core.Base58;
 import org.bitcoinj.core.DumpedPrivateKey;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.NetworkParameters;

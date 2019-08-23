@@ -61,7 +61,7 @@ public class CardMain {
 						.init(networkType)
 						.createOrLoadWallet(WALLET_DIR, resp)
 						.getWalletUtils();
-				walletUtils.printSummary();
+				walletUtils.printSummary(networkType);
 				return true;
 			});
 	}
@@ -129,6 +129,12 @@ public class CardMain {
 		
 		try {
 			walletUtils.sendCoin(destinationAddress, valueToSend);
+			try {
+				System.out.println("... PROCESSING ...");
+				Thread.sleep(10000);
+			} 
+			catch (InterruptedException e) {
+			}
 			System.out.println("... VALUE SENT SUCCESSFULLY!");
 		} 
 		catch (InsufficientMoneyException e) {
