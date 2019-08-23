@@ -10,7 +10,7 @@ My URL: https://live.blockcypher.com/btc/address/1JmaeVhbwsasZxj4yxUuNVR68TceRdh
   addr:12B6S4EX16Ys4aTi25X5hCFzoX1c789tVw  hash160:0ce0d1de9f8cc7697ec60fc2498cc6d2a7692856  (M/0H/1, internal)
   addr:1MSWcLjMyLbtzX9SKFYHhvAWigEaikVCWD  hash160:e035a19edeb985d92736d8081c5fcce134ed321a  (M/0H/0/0)
   
-  addr:1LDjvV9jf394VfjK9WWPjQbEQU8zRNtAyZ  hash160:d2d3360750df6f5a4e55dc36ce47ed43f392f624  (M/0H/1/0)
-  addr:1Gq2iCHBTj2t7HskQe3cQyxuiitzW3efVo  hash160:ad9f47d33aa5fce2496bbdc181dc5e059750aae9  (M/0H/1/1)
+  addr:1LDjvV9jf394VfjK9WWPjQbEQU8zRNtAyZ  hash160:d2d3360750df6f5a4e55dc36ce47ed43f392f624  (M/0H/1/0) => KwVZVL1Hv6QKAgNP2eoAGsTkdDcWCRJVd6KD7xFypzzbCAqYkrsj
+  addr:1Gq2iCHBTj2t7HskQe3cQyxuiitzW3efVo  hash160:ad9f47d33aa5fce2496bbdc181dc5e059750aae9  (M/0H/1/1) => KzP7W92xXJdNK1AtZYRehArcFSm8Kznc1MoQbEv9kgq55j8pTWvC
   
   addr:1JmaeVhbwsasZxj4yxUuNVR68TceRdhz5A  hash160:c2e886fcd5c4e0aedb3ff24c41eaf508ff8ca2e9  (M/0H/1/2)

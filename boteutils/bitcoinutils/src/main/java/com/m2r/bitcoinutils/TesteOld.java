@@ -6,41 +6,41 @@ import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.NetworkParameters;
 import org.bitcoinj.kits.WalletAppKit;
 
-public class Teste {
+public class TesteOld {
 
 	public static void createWallat(String id) {
 		BitcoinNetworkType networkType = BitcoinNetworkType.TEST;		
-		NetworkParameters netParams = BitcoinUtils.init(networkType);
-		WalletAppKit walletAppKitFrom = BitcoinUtils.createOrLoadWalletAppKit(netParams, System.getProperty("user.home")+"/.bitcoin", id.toLowerCase());
+		NetworkParameters netParams = BitcoinUtilsOld.init(networkType);
+		WalletAppKit walletAppKitFrom = BitcoinUtilsOld.createOrLoadWalletAppKit(netParams, System.getProperty("user.home")+"/.bitcoin", id.toLowerCase());
 		System.out.println(walletAppKitFrom.wallet());
-		BitcoinUtils.printWallatInfo(networkType, id, walletAppKitFrom, netParams);		
+		BitcoinUtilsOld.printWallatInfo(networkType, id, walletAppKitFrom, netParams);		
 	}	
 	
 	public static void loadWallat(String id) {
 		BitcoinNetworkType networkType = BitcoinNetworkType.TEST;		
-		NetworkParameters netParams = BitcoinUtils.init(networkType);		
-		WalletAppKit walletAppKitFrom = BitcoinUtils.createOrLoadWalletAppKit(netParams, System.getProperty("user.home")+"/.bitcoin", id.toLowerCase());
+		NetworkParameters netParams = BitcoinUtilsOld.init(networkType);		
+		WalletAppKit walletAppKitFrom = BitcoinUtilsOld.createOrLoadWalletAppKit(netParams, System.getProperty("user.home")+"/.bitcoin", id.toLowerCase());
 		System.out.println(walletAppKitFrom.wallet());
-		BitcoinUtils.printWallatInfo(networkType, id, walletAppKitFrom, netParams);		
+		BitcoinUtilsOld.printWallatInfo(networkType, id, walletAppKitFrom, netParams);		
 	}	
 	
 	public static void loadWallatWithPrivateKey(String id, String privateKey) {
 		BitcoinNetworkType networkType = BitcoinNetworkType.TEST;		
-		NetworkParameters netParams = BitcoinUtils.init(networkType);		
-		ECKey key = BitcoinUtils.loadKey(netParams, privateKey);
-		WalletAppKit walletAppKitFrom = BitcoinUtils.createOrLoadWalletAppKit(netParams, System.getProperty("user.home")+"/.bitcoin", id.toLowerCase(), key);
+		NetworkParameters netParams = BitcoinUtilsOld.init(networkType);		
+		ECKey key = BitcoinUtilsOld.loadKey(netParams, privateKey);
+		WalletAppKit walletAppKitFrom = BitcoinUtilsOld.createOrLoadWalletAppKit(netParams, System.getProperty("user.home")+"/.bitcoin", id.toLowerCase(), key);
 		System.out.println(walletAppKitFrom.wallet());
-		BitcoinUtils.printWallatInfo(networkType, id, walletAppKitFrom, netParams);		
+		BitcoinUtilsOld.printWallatInfo(networkType, id, walletAppKitFrom, netParams);		
 	}	
 	
 	// From: msRsr4uUZ8wzWaAPhBn9HWUZTKVoh6hZAQ (a46d74fd9e4624e01fb9fefc467b42cddb837e55f9c9fd8d33bfa59196e6c322)
 	// To: mxkgGjUUyfFszELe6BxXazN3ZQujaMT8Pe (tpubD8ktbSeTsBjBNseQfFG31wLAgLaJk5FNLfYzCm6777Drou9epY3jmZxy7fXUjZTaKCs3odRqm7J7WTVqDbd9NoEERins2EnNTqvmHw8ioDM)
 	public static void sendAndReceiveTest(boolean isJustConsult) throws Exception {		
 		BitcoinNetworkType networkType = BitcoinNetworkType.TEST;		
-		NetworkParameters netParams = BitcoinUtils.init(networkType);
-		WalletAppKit walletAppKit = BitcoinUtils.createOrLoadWalletAppKit(netParams, System.getProperty("user.home")+"/.bitcoin", "test2");
+		NetworkParameters netParams = BitcoinUtilsOld.init(networkType);
+		WalletAppKit walletAppKit = BitcoinUtilsOld.createOrLoadWalletAppKit(netParams, System.getProperty("user.home")+"/.bitcoin", "test2");
 		Coin value = walletAppKit.wallet().getBalance();
-		BitcoinUtils.sendCoin(walletAppKit, Address.fromString(netParams, ""), value);
+		BitcoinUtilsOld.sendCoin(walletAppKit, Address.fromString(netParams, ""), value);
 	}	
 	
 	// From: msRsr4uUZ8wzWaAPhBn9HWUZTKVoh6hZAQ (a46d74fd9e4624e01fb9fefc467b42cddb837e55f9c9fd8d33bfa59196e6c322)
