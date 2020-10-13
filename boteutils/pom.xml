@@ -12,7 +12,7 @@
 	<properties>
 		<!-- TETANDO GIT MERGE CORRIGINDO MERGE -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<junit.version>4.8.2</junit.version>
+		<junit.version>4.13.1</junit.version>
 		<maven.compiler.target>1.7</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
